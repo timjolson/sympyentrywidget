@@ -1,4 +1,4 @@
-from sympyEntryWidget.sympyEntryWidget.sympy_widget import *
+from sympyEntryWidget.sympy_widget import *
 import logging
 import sys
 

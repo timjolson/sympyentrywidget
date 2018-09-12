@@ -1,5 +1,5 @@
 import pytest
-from sympyEntryWidget.sympyEntryWidget.sympy_widget import *
+from sympyEntryWidget.sympy_widget import *
 from generalUtils.helpers_for_tests import *
 from entryWidget.utils import getCurrentColor
 from sympy import Symbol
