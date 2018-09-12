@@ -1,8 +1,14 @@
 from setuptools import setup, find_packages
 
+name = 'sympyEntryWidget'
+
+import logging
+logging.basicConfig(filename=f'.\install-{name}.log', level=logging.DEBUG)
+logging.debug(find_packages())
+
 setup(
-    name="sympyEntryWidget",
+    name=name,
     version="0.5",
     packages = find_packages(),
-    install_requires = ['PyQt5', 'sympy'],
+    install_requires = ['PyQt5'],
 )

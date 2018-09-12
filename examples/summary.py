@@ -2,8 +2,8 @@ from PyQt5.QtWidgets import QWidget, QVBoxLayout
 from PyQt5.Qt import QApplication
 from PyQt5 import QtCore  # for mouse click events
 
-from MyQtWidgets import AutoColorLineEdit, LabelLineEdit, EntryWidget, \
-    SympyAutoColorLineEdit, SympySymbolLineEdit, SympyLabelLineEdit, SympyEntryWidget
+from entryWidget import AutoColorLineEdit, LabelLineEdit, EntryWidget
+from sympyEntryWidget import SympyAutoColorLineEdit, SympySymbolLineEdit, SympyLabelLineEdit, SympyEntryWidget
 
 # import sys
 # import logging
