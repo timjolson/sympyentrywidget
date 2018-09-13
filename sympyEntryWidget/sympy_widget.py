@@ -8,6 +8,7 @@ import sympy.physics.units as units
 from types import MethodType
 from copy import copy
 from keyword import iskeyword
+from PyQt5.QtWidgets import QWidget
 
 unit_subs = {k:getattr(units, k) for k in units.__dict__.keys() if (isinstance(getattr(units, k), Expr) and getattr(units, k).has(units.Unit))}
 
@@ -32,44 +33,70 @@ def symbols_contain_units(syms):
     return False
 
 
-class SympyHelper():
+class SympyHelper(QWidget):
 
-    def __init__(self, parent=None, **kwargs):
-        for k,v in kwargs.items():
-            assert k in self.defaultArgs.keys(), f"Keyword: '{k}' not available for {self.__class__.__name__}"
-
-        # self.transformations = (standard_transformations + (implicit_multiplication_application, ))
-        # self.transformations = standard_transformations
-
+    def __new__(cls, *args, **kwargs):
+        self = QWidget.__new__(cls, *args, **kwargs)
         self._expr = None
         self._symbols = set()
+        return self
 
-        for a in ['getExpr', 'getSymbols', 'getSymbolsDict']:
-            setattr(self, a, MethodType(getattr(SympyHelper, a), self))
-
-        if 'isError' in kwargs.keys():
-            super(type(self), self).__init__(parent, isError=kwargs.pop('isError'), **kwargs)
-        else:
-            setattr(self, '_isError', MethodType(getattr(SympyHelper, '_isError'), self))
-            super(type(self), self).__init__(parent, isError=self._isError, **kwargs)
-
-        self.setError(self._isError())
-
-    def _isError(self):
-        logging.debug(self.name + 'isError()')
-        self._expr = None
-        self._symbols = set()
-
-        if not expr_is_safe(self.text()):
-            logging.debug(self.name + "Invalid use of '.'")
-            return "Invalid use of '.'"
-
+    def isKeywordError(self):
         if iskeyword(self.text()):
             logging.debug(self.name + "Keyword in use")
             return "Keyword in use"
+        return False
+
+    def isNotSafeError(self):
+        if not expr_is_safe(self.text()):
+            logging.debug(self.name + "Invalid use of '.'")
+            return "Invalid use of '.'"
+        return False
+
+    def isNotIdentifierError(self):
+        if not self.text().isidentifier():
+            logging.debug(self.name + "Not a valid identifier")
+            return "Not a valid identifier"
+        return False
+
+    def isSymbolError(self):
+        logging.debug(self.name + 'isSymbolError()')
+        self._expr = None
+        self._symbols = set()
+
+        if self.text() == '':
+            return 'Empty string not a valid Sympy Symbol name'
+
+        err = self.isNotSafeError()
+        if err:
+            return err
+
+        err = self.isKeywordError()
+        if err:
+            return err
+
+        err = self.isNotIdentifierError()
+        if err:
+            return err
+        else:
+            self._symbols = {Symbol(self.text())}
+            return False
+
+    def isExprError(self):
+        logging.debug(self.name + 'isExprError()')
+        self._expr = None
+        self._symbols = set()
 
         if self.text() == '':
             return False
+
+        err = self.isNotSafeError()
+        if err:
+            return err
+
+        err = self.isKeywordError()
+        if err:
+            return err
 
         try:
             # expr = parse_expr(self.text() if self.text() else '0', evaluate=False, transformations=self.transformations)
@@ -115,11 +142,11 @@ class SympyHelper():
         return {k.name:k for k in self._symbols}
 
 
-class SympyAutoColorLineEdit(AutoColorLineEdit):
+class SympyAutoColorLineEdit(AutoColorLineEdit, SympyHelper):
 
     def __init__(self, parent=None, **kwargs):
         assert 'isError' not in kwargs.keys(), "Keyword: 'isError' not available for {self.__class__.__name__}"
-        SympyHelper.__init__(self, parent, **kwargs)
+        AutoColorLineEdit.__init__(self, parent, isError=SympyHelper.isExprError, **kwargs)
 
         self.getValue = self.getExpr
 
@@ -127,12 +154,14 @@ class SympyAutoColorLineEdit(AutoColorLineEdit):
             self._inited = True
             logging.debug(self.name + "---- Initialized ----")
 
+        self.setError(self.isError())
 
-class SympyLabelLineEdit(LabelLineEdit):
+
+class SympyLabelLineEdit(LabelLineEdit, SympyHelper):
 
     def __init__(self, parent=None, **kwargs):
         assert 'isError' not in kwargs.keys(), "Keyword: 'isError' not available for {self.__class__.__name__}"
-        SympyHelper.__init__(self, parent, **kwargs)
+        super().__init__(parent, isError=SympyHelper.isExprError, **kwargs)
 
         self.getValue = self.getExpr
 
@@ -140,13 +169,15 @@ class SympyLabelLineEdit(LabelLineEdit):
             self._inited = True
             logging.debug(self.name + "---- Initialized ----")
 
+        self.setError(self.isError())
 
-class SympySymbolLineEdit(LabelLineEdit):
+
+class SympySymbolLineEdit(LabelLineEdit, SympyHelper):
 
     def __init__(self, parent=None, **kwargs):
         assert 'isError' not in kwargs.keys(), "Keyword: 'isError' not available for {self.__class__.__name__}"
         kwargs.setdefault('startPrompt','variableName')
-        SympyHelper.__init__(self, parent, isError=self._isError, **kwargs)
+        super().__init__(parent, isError=SympyHelper.isSymbolError, **kwargs)
 
         self.getValue = self.getExpr
 
@@ -154,38 +185,22 @@ class SympySymbolLineEdit(LabelLineEdit):
             self._inited = True
             logging.debug(self.name + "---- Initialized ----")
 
-    def _isError(self):
-        logging.debug(self.name + 'isError()')
-        self._expr = None
-        self._symbols = set()
-
-        text = self.text()
-
-        if not expr_is_safe(text):
-            logging.debug(self.name + "Invalid use of '.'")
-            return "Invalid use of '.'"
-
-        # TODO: do keyword and eval checking
-
-        if self.text().isidentifier():
-            self._symbols = {Symbol(self.text())}
-            return False
-        else:
-            logging.debug(self.name + 'Not a valid identifier')
-            return 'Not a valid identifier'
+        self.setError(self.isError())
 
 
-class SympyEntryWidget(EntryWidget):
+class SympyEntryWidget(EntryWidget, SympyHelper):
 
     def __init__(self, parent=None, **kwargs):
         assert 'isError' not in kwargs.keys(), "Keyword: 'isError' not available for {self.__class__.__name__}"
-        SympyHelper.__init__(self, parent, **kwargs)
+        super().__init__(parent, isError=SympyHelper.isExprError, **kwargs)
 
         if self.__class__.__name__ == 'SympyEntryWidget':
             self._inited = True
             logging.debug(self.name + "---- Initialized ----")
 
-        self._units = self.getUnits()
+        self._units = self.__getUnits()
+
+        self.setError(self.isError())
 
     def getValue(self):
         logging.debug(self.name + 'getValue()')
@@ -215,6 +230,16 @@ class SympyEntryWidget(EntryWidget):
     def getUnits(self):
         return self._units
 
+    def __getUnits(self):
+        u = self._selectedOption
+        try:
+            u = getattr(units, u)
+            logging.debug(self.name + 'u is ' + str(u))
+        except AttributeError:
+            u = Symbol(u)
+            logging.debug(self.name + 'u is symbol ' + str(u))
+        return u
+
     def setUnits(self, unit, fixed):
         # TODO: test unit setting
         if isinstance(unit, units.Quantity):
@@ -231,14 +256,7 @@ class SympyEntryWidget(EntryWidget):
         logging.debug(self.name + f"optionChanged:'{self._optionList.currentText()}'")
         self._selectedOption = self._optionList.currentText()
 
-        u = self._selectedOption
-        try:
-            u = getattr(units, u)
-            logging.debug(self.name + 'u is ' + str(u))
-        except AttributeError:
-            u = Symbol(u)
-            logging.debug(self.name + 'u is symbol ' + str(u))
-        self._units = u
+        self._units = self.__getUnits()
 
         if self._inited:
             self.onOptionChanged.__self__.onOptionChanged()
