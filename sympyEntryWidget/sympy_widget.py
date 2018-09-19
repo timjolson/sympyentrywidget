@@ -1,4 +1,4 @@
-from generalUtils import expr_is_safe
+from generalUtils import exprIsSafe
 from entryWidget.entry_widget import EntryWidget, AutoColorLineEdit, LabelLineEdit
 from sympy import Symbol, sympify, Expr
 from sympy.core.sympify import SympifyError
@@ -48,7 +48,7 @@ class SympyHelper(QWidget):
         return False
 
     def isNotSafeError(self):
-        if not expr_is_safe(self.text()):
+        if not exprIsSafe(self.text()):
             logging.debug(self.name + "Invalid use of '.'")
             return "Invalid use of '.'"
         return False
