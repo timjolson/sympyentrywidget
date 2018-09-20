@@ -10,9 +10,9 @@ from copy import copy
 from keyword import iskeyword
 from PyQt5.QtWidgets import QWidget
 
-unit_subs = {k:getattr(units, k) for k in units.__dict__.keys() if (isinstance(getattr(units, k), Expr) and getattr(units, k).has(units.Unit))}
+unitSubs = {k:getattr(units, k) for k in units.__dict__.keys() if (isinstance(getattr(units, k), Expr) and getattr(units, k).has(units.Unit))}
 
-def symbols_contain_units(syms):
+def symbolsContainUnits(syms):
     """Detect if iterable of Symbol(s) contains units/physical quantities.
 
     :param syms: iterable of Symbols or strings to search
@@ -209,8 +209,8 @@ class SympyEntryWidget(EntryWidget, SympyHelper):
         expr = self._expr
 
         if expr is not None:
-            if symbols_contain_units(self.getSymbols()):
-                expr = units.convert_to(expr.subs(unit_subs), u)
+            if symbolsContainUnits(self.getSymbols()):
+                expr = units.convert_to(expr.subs(unitSubs), u)
                 logging.debug(self.name + 'return converted: ' + str(expr))
                 return expr
             logging.debug(self.name + 'return multiplied: ' + str(expr*u))
@@ -262,4 +262,5 @@ class SympyEntryWidget(EntryWidget, SympyHelper):
             self.onOptionChanged.__self__.onOptionChanged()
 
 
-__all__ = ['SympyAutoColorLineEdit', 'SympyLabelLineEdit', 'SympyEntryWidget', 'SympySymbolLineEdit', 'units', 'unit_subs', 'symbols_contain_units']
+__all__ = ['SympyAutoColorLineEdit', 'SympyLabelLineEdit', 'SympyEntryWidget', 'SympySymbolLineEdit', 'units',
+           'unitSubs', 'symbolsContainUnits']

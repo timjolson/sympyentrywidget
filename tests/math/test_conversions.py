@@ -45,9 +45,9 @@ def test_conversion_math():
 
 
 def test_string_embedded_units():
-    expr1 = parse_expr("3*inch + 2*ft", evaluate=False).subs(unit_subs)
-    expr2 = parse_expr("2*ft", evaluate=False).subs(unit_subs)
-    expr3 = parse_expr("3*inch", evaluate=False).subs(unit_subs)
+    expr1 = parse_expr("3*inch + 2*ft", evaluate=False).subs(unitSubs)
+    expr2 = parse_expr("2*ft", evaluate=False).subs(unitSubs)
+    expr3 = parse_expr("3*inch", evaluate=False).subs(unitSubs)
 
     expr1_conv = units.convert_to(expr1, units.inch)
     expr2_conv = units.convert_to(expr2, units.inch)
@@ -65,8 +65,8 @@ def test_string_embedded_units():
     assert expr1_conv - expr3_conv == expr2_conv
     assert expr1_conv - expr2_conv == expr3_conv
 
-    assert units.convert_to(expr1.subs(unit_subs), units.meter) == units.convert_to(expr2+expr3, units.meter)
-    assert units.convert_to(expr1.subs(unit_subs), units.inch) == units.convert_to(expr2+expr3, units.inch)
+    assert units.convert_to(expr1.subs(unitSubs), units.meter) == units.convert_to(expr2 + expr3, units.meter)
+    assert units.convert_to(expr1.subs(unitSubs), units.inch) == units.convert_to(expr2 + expr3, units.inch)
 
 
 def test_conversion_widgets(qtbot):
@@ -193,22 +193,22 @@ def test_symbols_contain_units():
     from sympy.abc import a
     from sympy.physics.units import inch, meter, kilogram, newton, mm, kg
 
-    assert symbols_contain_units({a, inch}) is True
-    assert symbols_contain_units({a, meter}) is True
-    assert symbols_contain_units({a, mm}) is True
-    assert symbols_contain_units({a, kg}) is True
-    assert symbols_contain_units({a, kilogram}) is True
-    assert symbols_contain_units({a, newton}) is True
+    assert symbolsContainUnits({a, inch}) is True
+    assert symbolsContainUnits({a, meter}) is True
+    assert symbolsContainUnits({a, mm}) is True
+    assert symbolsContainUnits({a, kg}) is True
+    assert symbolsContainUnits({a, kilogram}) is True
+    assert symbolsContainUnits({a, newton}) is True
 
-    assert symbols_contain_units({a, Symbol('newton')}) is True
-    assert symbols_contain_units({Symbol('madeup_unit')}) is False
-    assert symbols_contain_units({a, 'madeup_unit'}) is False
-    assert symbols_contain_units({a, 'mm'}) is True
-    assert symbols_contain_units({a, 'newton'}) is True
-    assert symbols_contain_units({a, 'kg'}) is True
+    assert symbolsContainUnits({a, Symbol('newton')}) is True
+    assert symbolsContainUnits({Symbol('madeup_unit')}) is False
+    assert symbolsContainUnits({a, 'madeup_unit'}) is False
+    assert symbolsContainUnits({a, 'mm'}) is True
+    assert symbolsContainUnits({a, 'newton'}) is True
+    assert symbolsContainUnits({a, 'kg'}) is True
 
-    assert symbols_contain_units({}) is False
-    assert symbols_contain_units({a}) is False
+    assert symbolsContainUnits({}) is False
+    assert symbolsContainUnits({a}) is False
 
 
 if __name__ == '__main__':
