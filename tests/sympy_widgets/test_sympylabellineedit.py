@@ -36,9 +36,6 @@ def test_constructor_label(qtbot):
     assert widget.getLabel() == test_strings[1]
     assert widget._label.text() == test_strings[1]
 
-    with pytest.raises(AssertionError):
-        widget = SympyLabelLineEdit(label=test_strings[-1])
-
 
 def test_constructor_error(qtbot):
     widget = SympyLabelLineEdit(startPrompt='text.')
