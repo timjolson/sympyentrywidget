@@ -10,9 +10,10 @@ setup(
     name=name,
     version="0.5",
     packages = find_packages(),
-    install_requires = ['PyQt5'],
+    install_requires = ['PyQt5', 'sympy'],
     dependency_links=[
         'https://github.com/timjolson/entrywidget.git',
         'https://github.com/timjolson/generalutils.git'
-        ]
+        ],
+    tests_require = ['pytest'],
 )

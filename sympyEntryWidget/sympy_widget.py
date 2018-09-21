@@ -16,30 +16,33 @@ def symbolsContainUnits(syms):
     """Detect if iterable of Symbol(s) contains units/physical quantities.
 
     :param syms: iterable of Symbols or strings to search
-    :return: True if any sym in syms:
-        isinstance(units.Unit)
-        isinstance(units.Quantity)
-        isinstance(Symbol) and sym.name in units.__dict__
+    :return: True if something representing a unit is in syms.
+
+        for sym in syms:
+            if isinstance(sym, str) and getattr(units, sym, False):
+                return True
+            elif isinstance(sym, (units.Unit, units.Quantity)):
+                return True
+            elif isinstance(sym, Symbol) and getattr(units, sym.name, False):
+                return True
+        return False
     """
     for sym in syms:
-        if isinstance(sym, str):
-            if getattr(units, sym, False):
-                return True
+        if isinstance(sym, str) and getattr(units, sym, False):
+            return True
         elif isinstance(sym, (units.Unit, units.Quantity)):
             return True
-        elif isinstance(sym, Symbol):
-            if getattr(units, sym.name, False):
-                return True
+        elif isinstance(sym, Symbol) and getattr(units, sym.name, False):
+            return True
     return False
 
 
-class SympyHelper(QWidget):
-
-    def __new__(cls, *args, **kwargs):
-        self = QWidget.__new__(cls, *args, **kwargs)
+class _SympyHelper():
+    def __init__(self):
+        super().__init__()
         self._expr = None
         self._symbols = set()
-        return self
+        self._evald = None
 
     def isKeywordError(self):
         if iskeyword(self.text()):
@@ -116,7 +119,7 @@ class SympyHelper(QWidget):
             return 'SympifyError'
         else:
             try:
-                expr.evalf()
+                self._evald = expr.evalf()
             except TypeError:
                 logging.debug(self.name + 'TypeError')
                 return 'TypeError'
@@ -142,61 +145,57 @@ class SympyHelper(QWidget):
         return {k.name:k for k in self._symbols}
 
 
-class SympyAutoColorLineEdit(AutoColorLineEdit, SympyHelper):
+class SympyAutoColorLineEdit(AutoColorLineEdit, _SympyHelper):
 
     def __init__(self, parent=None, **kwargs):
         assert 'isError' not in kwargs.keys(), "Keyword: 'isError' not available for {self.__class__.__name__}"
-        AutoColorLineEdit.__init__(self, parent, isError=SympyHelper.isExprError, **kwargs)
+        AutoColorLineEdit.__init__(self, parent, isError=_SympyHelper.isExprError, **kwargs)
 
         self.getValue = self.getExpr
 
         if self.__class__.__name__ == 'SympyAutoColorLineEdit':
             self._inited = True
-            logging.debug(self.name + "---- Initialized ----")
 
         self.setError(self.isError())
 
 
-class SympyLabelLineEdit(LabelLineEdit, SympyHelper):
+class SympyLabelLineEdit(LabelLineEdit, _SympyHelper):
 
     def __init__(self, parent=None, **kwargs):
         assert 'isError' not in kwargs.keys(), "Keyword: 'isError' not available for {self.__class__.__name__}"
-        super().__init__(parent, isError=SympyHelper.isExprError, **kwargs)
+        super().__init__(parent, isError=_SympyHelper.isExprError, **kwargs)
 
         self.getValue = self.getExpr
 
         if self.__class__.__name__ == 'SympyAutoColorLineEdit':
             self._inited = True
-            logging.debug(self.name + "---- Initialized ----")
 
         self.setError(self.isError())
 
 
-class SympySymbolLineEdit(LabelLineEdit, SympyHelper):
+class SympySymbolLineEdit(LabelLineEdit, _SympyHelper):
 
     def __init__(self, parent=None, **kwargs):
         assert 'isError' not in kwargs.keys(), "Keyword: 'isError' not available for {self.__class__.__name__}"
         kwargs.setdefault('startPrompt','variableName')
-        super().__init__(parent, isError=SympyHelper.isSymbolError, **kwargs)
+        super().__init__(parent, isError=_SympyHelper.isSymbolError, **kwargs)
 
         self.getValue = self.getExpr
 
         if self.__class__.__name__ == 'SympySymbolLineEdit':
             self._inited = True
-            logging.debug(self.name + "---- Initialized ----")
 
         self.setError(self.isError())
 
 
-class SympyEntryWidget(EntryWidget, SympyHelper):
+class SympyEntryWidget(EntryWidget, _SympyHelper):
 
     def __init__(self, parent=None, **kwargs):
         assert 'isError' not in kwargs.keys(), "Keyword: 'isError' not available for {self.__class__.__name__}"
-        super().__init__(parent, isError=SympyHelper.isExprError, **kwargs)
+        super().__init__(parent, isError=_SympyHelper.isExprError, **kwargs)
 
         if self.__class__.__name__ == 'SympyEntryWidget':
             self._inited = True
-            logging.debug(self.name + "---- Initialized ----")
 
         self._units = self.__getUnits()
 
