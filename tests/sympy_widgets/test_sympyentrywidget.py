@@ -10,7 +10,7 @@ from PyQt5.Qt import QApplication
 app = QApplication([])
 
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
-
+#TODO: review tests for redundancy
 
 def test_constructor(qtbot):
     widget = SympyEntryWidget()
