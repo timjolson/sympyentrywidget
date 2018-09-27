@@ -1,7 +1,7 @@
 import pytest
 from sympyEntryWidget.sympy_widget import *
 from generalUtils.helpers_for_tests import *
-from entryWidget.utils import getCurrentColor
+from generalUtils import getCurrentColor
 from sympy import Symbol
 import logging
 import sys
