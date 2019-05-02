@@ -1,7 +1,8 @@
 import pytest
 from sympyEntryWidget.sympy_widget import *
 from generalUtils.helpers_for_tests import *
-from generalUtils import getCurrentColor
+from generalUtils.helpers_for_qt_tests import *
+from generalUtils.qt_utils import getCurrentColor
 from sympy import Symbol
 import logging, sys
 
@@ -84,7 +85,7 @@ def test_conversion(qtbot):
     assert all([s in syms.keys() for s in ['a', 'b']])
 
     expr = widget.getValue()
-    assert str(expr.subs({'millimeter': 'test'})) == 'test*a*b'
+    assert str(expr.subs({'millimeter': 'temp'})) == 'temp*a*b'
     assert units.convert_to(expr, getattr(units, 'meter')) == units.convert_to(expr, units.meter)
     assert widget.convert_to('meter') == units.convert_to(expr, getattr(units, 'meter'))
 
@@ -94,7 +95,7 @@ def test_conversion(qtbot):
     assert all([s in syms.keys() for s in ['a', 'b']])
 
     expr = widget.getValue()
-    assert str(expr.subs({'kilogram': 'test'})) == 'test*a*b'
+    assert str(expr.subs({'kilogram': 'temp'})) == 'temp*a*b'
     assert units.convert_to(expr, getattr(units, 'gram')) == units.convert_to(expr, units.gram)
     assert widget.convert_to('gram') == units.convert_to(expr, getattr(units, 'gram'))
     assert widget.convert_to('gram') == widget.convert_to(units.gram)

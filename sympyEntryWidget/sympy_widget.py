@@ -1,4 +1,4 @@
-from generalUtils import exprIsSafe
+from generalUtils.sympy_utils import expr_is_safe
 from entryWidget.entry_widget import EntryWidget, AutoColorLineEdit, LabelLineEdit
 from sympy import Symbol, sympify, Expr
 from sympy.core.sympify import SympifyError
@@ -51,7 +51,7 @@ class _SympyHelper():
         return False
 
     def isNotSafeError(self):
-        if not exprIsSafe(self.text()):
+        if not expr_is_safe(self.text()):
             logging.debug(self.name + "Invalid use of '.'")
             return "Invalid use of '.'"
         return False
