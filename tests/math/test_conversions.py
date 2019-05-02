@@ -11,6 +11,7 @@ app = QApplication([])
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 
 
+#TODO: rewrite this test file for clarity
 def test_conversion_math():
     # just seeing what works/doesn't
     dummy_val = pi/8
@@ -181,10 +182,29 @@ def test_conversion_widgets_embedded(qtbot):
     with pytest.raises(AssertionError):
         assert known.evalf() == evalf.evalf()
     with pytest.raises(AssertionError):
-        assert known.evalf().equals(evalf.evalf())
+        assert known == evalf.evalf()
+    with pytest.raises(AssertionError):
+        assert known.evalf() == evalf
+
+    assert known.equals(evalf)
+    assert known.equals(evalf.evalf())
+    assert known.evalf().equals(evalf.evalf())
+    assert known.evalf().equals(evalf)
 
     # Conversions must happen at the end :(
-    assert (units.convert_to(sum_values, widget1.getUnits()) - 3.5*units.inch) != 0
+    assert (units.convert_to(sum_values, widget1.getUnits()) - 3.75*units.inch).equals(1*units.foot)
+
+    # not evaluated before comparison
+    with pytest.raises(AssertionError):
+        assert (units.convert_to(sum_values, widget1.getUnits()) - 3.75*units.inch) == (1.0*units.foot)
+
+    # unit mismatch
+    with pytest.raises(AssertionError):
+        assert (units.convert_to(sum_values, widget1.getUnits()) - 3.75*units.inch).evalf() == (1.0*units.foot)
+
+    assert units.convert_to(units.convert_to(sum_values, widget1.getUnits()) - 3.75*units.inch, units.foot) == (1.0*units.foot)
+    assert (units.convert_to(sum_values, widget1.getUnits()) - 15.75*units.inch) == 0
+    assert (units.convert_to(sum_values - 15.75*units.inch, widget1.getUnits())) == 0
 
 
 def test_symbols_contain_units():
