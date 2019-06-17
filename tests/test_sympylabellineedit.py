@@ -1,8 +1,9 @@
 import pytest
-from sympyEntryWidget.sympy_widget import *
-from generalUtils.helpers_for_tests import *
-from generalUtils.helpers_for_qt_tests import *
-from generalUtils.qt_utils import getCurrentColor
+from sympyEntryWidget import *
+from qt_utils.helpers_for_tests import *
+from qt_utils.helpers_for_qt_tests import *
+from qt_utils import getCurrentColor
+from . import *
 from sympy import Symbol
 import logging, sys
 
@@ -14,7 +15,7 @@ logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 #TODO: review tests for redundancy
 
 def test_constructor(qtbot):
-    widget = SympyEntryWidget()
+    widget = SympyLabelLineEdit()
     show(locals())
     assert widget.getError() is False
     assert getCurrentColor(widget._editBox, 'Background')[0][0] == widget.defaultColors['blank'][0]
@@ -23,46 +24,55 @@ def test_constructor(qtbot):
     syms = {str(k): k for k in syms}
     assert syms == widget.getSymbolsDict()
 
-    widget = SympyEntryWidget(startPrompt='text')
+    widget = SympyLabelLineEdit(startPrompt='text')
     show(locals())
     assert widget.getError() is False
     assert getCurrentColor(widget._editBox, 'Background')[0][0] == widget.defaultColors['default'][0]
+
+
+def test_constructor_label(qtbot):
+    widget = SympyLabelLineEdit(label=test_strings[1])
+    show(locals())
+    assert widget.getLabel() == test_strings[1]
+
+    assert widget.getLabel() == test_strings[1]
+    assert widget._label.text() == test_strings[1]
 
 
 def test_constructor_error(qtbot):
-    widget = SympyEntryWidget(startPrompt='text.')
+    widget = SympyLabelLineEdit(startPrompt='text.')
     show(locals())
     assert widget.getError()
     assert getCurrentColor(widget._editBox, 'Background')[0][0] == widget.defaultColors['error'][0]
 
-    widget = SympyEntryWidget(startPrompt='0.1)')
+    widget = SympyLabelLineEdit(startPrompt='0.1)')
     show(locals())
     assert widget.getError()
     assert getCurrentColor(widget._editBox, 'Background')[0][0] == widget.defaultColors['error'][0]
 
-    widget = SympyEntryWidget(startPrompt='1.)')
+    widget = SympyLabelLineEdit(startPrompt='1.)')
     show(locals())
     assert widget.getError()
     assert getCurrentColor(widget._editBox, 'Background')[0][0] == widget.defaultColors['error'][0]
 
-    widget = SympyEntryWidget(startPrompt='1.)')
+    widget = SympyLabelLineEdit(startPrompt='1.)')
     show(locals())
     assert widget.getError()
     assert getCurrentColor(widget._editBox, 'Background')[0][0] == widget.defaultColors['error'][0]
 
-    widget = SympyEntryWidget(startPrompt='(1.)')
+    widget = SympyLabelLineEdit(startPrompt='(1.)')
     show(locals())
     assert widget.getError() is False
     assert getCurrentColor(widget._editBox, 'Background')[0][0] == widget.defaultColors['default'][0]
 
-    widget = SympyEntryWidget(startPrompt='(.1)')
+    widget = SympyLabelLineEdit(startPrompt='(.1)')
     show(locals())
     assert widget.getError() is False
     assert getCurrentColor(widget._editBox, 'Background')[0][0] == widget.defaultColors['default'][0]
 
 
 def test_constructor_math(qtbot):
-    widget = SympyEntryWidget(startPrompt='2*a_1 + b')
+    widget = SympyLabelLineEdit(startPrompt='2*a_1 + b')
     show(locals())
     syms = widget.getSymbols()
     assert isinstance(syms.pop(), Symbol)
@@ -75,28 +85,4 @@ def test_constructor_math(qtbot):
     assert isinstance(syms, dict)
     assert 'a_1' in syms.keys()
     assert 'b' in syms.keys()
-    assert str(widget.getValue().subs({'a_1':3, 'b':2})) == '8*opt1'
-
-
-def test_conversion(qtbot):
-    widget = SympyEntryWidget(startPrompt='(1*a)*b', options=['mm', 'kg'])
-    syms = widget.getSymbolsDict()
-    assert len(syms) == 2
-    assert all([s in syms.keys() for s in ['a', 'b']])
-
-    expr = widget.getValue()
-    assert str(expr.subs({'millimeter': 'temp'})) == 'temp*a*b'
-    assert units.convert_to(expr, getattr(units, 'meter')) == units.convert_to(expr, units.meter)
-    assert widget.convert_to('meter') == units.convert_to(expr, getattr(units, 'meter'))
-
-    widget.setSelected('kg')
-    syms = widget.getSymbolsDict()
-    assert len(syms) == 2
-    assert all([s in syms.keys() for s in ['a', 'b']])
-
-    expr = widget.getValue()
-    assert str(expr.subs({'kilogram': 'temp'})) == 'temp*a*b'
-    assert units.convert_to(expr, getattr(units, 'gram')) == units.convert_to(expr, units.gram)
-    assert widget.convert_to('gram') == units.convert_to(expr, getattr(units, 'gram'))
-    assert widget.convert_to('gram') == widget.convert_to(units.gram)
-
+    assert widget.getValue().subs({'a_1':3, 'b':2}) == 8

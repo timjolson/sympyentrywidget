@@ -1,5 +1,5 @@
 from generalUtils.sympy_utils import expr_is_safe
-from entryWidget.entry_widget import EntryWidget, AutoColorLineEdit, LabelLineEdit
+from ..entrywidget import EntryWidget, AutoColorLineEdit, LabelLineEdit
 from sympy import Symbol, sympify, Expr
 from sympy.core.sympify import SympifyError
 import logging

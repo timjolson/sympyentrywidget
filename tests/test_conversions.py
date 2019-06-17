@@ -2,7 +2,7 @@ from sympy.parsing.sympy_parser import parse_expr
 from sympy import Symbol, pi
 import pytest
 
-from sympyEntryWidget.sympy_widget import *
+from sympyEntryWidget import *
 import logging, sys
 from PyQt5.Qt import QApplication
 

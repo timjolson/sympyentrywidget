@@ -1,19 +1,14 @@
 from setuptools import setup, find_packages
 
-name = 'sympyEntryWidget'
-
-import logging
-logging.basicConfig(filename=f'.\install-{name}.log', level=logging.DEBUG)
-logging.debug(find_packages())
 
 setup(
-    name=name,
-    version="0.5",
+    name='sympyEntryWidget',
+    version="0.6",
     packages = find_packages(),
     install_requires = ['PyQt5', 'sympy'],
     dependency_links=[
         'https://github.com/timjolson/entrywidget.git',
-        'https://github.com/timjolson/generalutils.git'
+        'https://github.com/timjolson/qt_utils.git'
         ],
     tests_require = ['pytest'],
 )
