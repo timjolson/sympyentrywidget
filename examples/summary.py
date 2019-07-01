@@ -1,57 +1,55 @@
 from PyQt5.QtWidgets import QWidget, QVBoxLayout
 from PyQt5.Qt import QApplication
 from PyQt5 import QtCore  # for mouse click events
+from qt_utils.colors import rgb
 
 from entryWidget import AutoColorLineEdit, LabelLineEdit, EntryWidget
-from sympyEntryWidget import SympyAutoColorLineEdit, SympySymbolLineEdit, SympyLabelLineEdit, SympyEntryWidget
+from sympyEntryWidget import (SympyAutoColorLineEdit, SympySymbolLineEdit,
+                              SympyLabelLineEdit, SympyEntryWidget, ComboBoxOptionSets)
 
-# import sys
-# import logging
-# logging.basicConfig(stream=sys.stdout, level=logging.INFO)
+import sys
+import logging
+logging.basicConfig(stream=sys.stdout, level=logging.INFO)
+
 
 ##################
 # helper functions, read their doc strings for reference
-def check_error_typed(widget, *args, **kwargs):
+def check_error_typed(widget):
     """Returns 'ERROR' if widget.text() == 'error', False otherwise"""
-    print('check_error_typed')
     if widget.text() == 'error':
+        widget.logger.info('ERROR')
         return 'ERROR'
     return False
 
-def show_mouse_click(widget, event, *args, **kwargs):
-    """Uses widget.setText() to show if mouse click was Left or Right Click"""
-    if event.button() == QtCore.Qt.LeftButton:
-        widget.setText('Left Click')
-    elif event.button() == QtCore.Qt.RightButton:
-        widget.setText('Right Click')
-
-def change_label_on_typing(widget, *args, **kwargs):
+def change_label_on_typing(widget):
     """Uses widget.setLabel() to change the QLabel to widget.text()"""
-    print('change label to: ' + widget.text())
+    widget.logger.info('change label to: ' + widget.text())
     widget.setLabel(widget.text())
 
-def change_color_on_option(widget, *args, **kwargs):
-    """Uses widget.setColors() to change QLineEdit colors to (widget.getSelected(), 'black')"""
-    print('change_color')
-    widget.setColors((widget.getSelected(), 'black'))
+def change_label_to_result(widget):
+    """Sets widget label to the result of the expression."""
+    widget.setLabel(str(widget.getExpr()))
 
-def show_symbols(widget, *args, **kwargs):
+def change_color_on_option(widget, t):
+    """Uses widget.setColors() to change AutoColorLineEdit background color"""
+    widget.logger.info(f'change background color to {t}')
+    widget.setColors((widget.currentData(), 'black'))
+
+def show_symbols(widget):
     """Uses widget.getSymbols() to print the sympy symbols in the widget's expression"""
-    print(widget.getSymbols())
+    widget.logger.info(widget.getSymbols())
 
-def sub_x(widget, *args, **kwargs):
+def sub_x(widget):
     """Substitutes 1.2 -> x in widget's expression, and prints solution"""
     expr = widget.getExpr()
     if expr:
-        print(expr.evalf(subs={'x':1.2}))
+        widget.logger.info(expr.evalf(subs={'x':1.2}))
 
-def convert_from_units(widget):
+def convert_to_meters(widget, t=None):
     """Convert widget value and selected units to meters, print result"""
-    print(
-        str(widget.getExpr()*widget.getUnits()) +
-          ' = ' + str(widget.convert_to('m')) +
-          ' = ' + str(widget.getExpr().evalf()) + '*' + str(widget.getUnits())
-    )
+    if t is None:
+        t = widget.getUnits()
+    widget.logger.info(widget.getValue() + ' <=> ' + widget.convertTo('m'))
 
 # end helper functions
 ##################
@@ -65,29 +63,37 @@ window = QWidget()
 # put a vertical layout in the window
 layout = QVBoxLayout(window)
 
-# QLineEdit that changes color automatically (base for the other widgets shown here)
-autocolor = AutoColorLineEdit(window, startPrompt='AutoColor', isError=check_error_typed)
+# QLineEdit that changes color automatically (base object for the other widgets shown here)
+autocolor = AutoColorLineEdit(window, text='AutoColor')
+autocolor.errorCheck = lambda: check_error_typed(autocolor)
 
 # AutoColorLineEdit, where expression is tested for safe sympy usage
-sympyauto = SympyAutoColorLineEdit(window, startPrompt='SympyAutoColor', onEditingFinished=show_symbols)
+sympyauto = SympyAutoColorLineEdit(window, text='SympyAutoColor')
+sympyauto.textChanged.connect(lambda: show_symbols(sympyauto))
 
 # AutoColorLineEdit with a QLabel
-labeledit = LabelLineEdit(window, label='Click Here', startPrompt='LabelLineEdit', onLabelClick=show_mouse_click)
+labeledit = LabelLineEdit(window, label='result', text='3*mm + 2*inch')
+labeledit.editingFinished.connect(lambda: change_label_to_result(labeledit))
 
 # AutoColorLineEdit with a QLabel, where expression is tested for safe sympy usage
-sympylabel = SympyLabelLineEdit(window, label='SympyLabel', startPrompt='sin(2*x)+3*pi/4.1', onLabelClick=sub_x)
+sympylabel = SympyLabelLineEdit(window, label='SympyLabel', text='sin(2*x)+3*pi/4.1')
+sympylabel.editingFinished.connect(lambda: sub_x(sympylabel))
 
 # AutoColorLineEdit with a QLabel, where expression is tested for safe sympy usage AS A SYMBOL
-sympysymbol = SympySymbolLineEdit(window, label="SympySymbol", onEditingFinished=show_symbols)
+sympysymbol = SympySymbolLineEdit(window, label="SympySymbol")
+sympysymbol.editingFinished.connect(lambda: show_symbols(sympysymbol))
 
 # AutoColorLineEdit, QLabel, and a QComboBox
-entry = EntryWidget(window, label="EntryWidget", startPrompt='pick a color',
-                    options=['red', 'blue', 'orange'], onOptionChanged=change_color_on_option)
+entry = EntryWidget(window, label="EntryWidget", text='pick a color',
+                    options={'red':(220, 10, 10), 'blue':'blue', 'orange':rgb(255, 165, 0)}
+                    )
+entry.optionChanged.connect(lambda t: change_color_on_option(entry, t))
 
 # AutoColorLineEdit, QLabel, and a QComboBox, where expression is tested for safe sympy usage
-sympyentry = SympyEntryWidget(window, label='SympyEntry', options=['mm', 'm', 'inch', 'km', 'ft'],
-                              startPrompt='3*pi/4 * 4', onEditingFinished=convert_from_units,
-                              onOptionChanged=convert_from_units)
+sympyentry = SympyEntryWidget(window, label='SympyEntry', options=ComboBoxOptionSets.length,
+                              text='3*pi/4 * 4')
+sympyentry.editingFinished.connect(lambda: convert_to_meters(sympyentry))
+sympyentry.optionChanged.connect(lambda t: convert_to_meters(sympyentry))
 
 
 layout.addWidget(autocolor)
