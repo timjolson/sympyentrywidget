@@ -10,8 +10,8 @@ import logging
 logger = logging.getLogger(__name__)
 logger.addHandler(logging.NullHandler())
 
-__unitExprs = {k:v for k,v in vars(units).items() if isinstance(v, Expr)}
-__dimensions = {k:v for k,v in __unitExprs.items() if isinstance(v, units.Dimension)}
+__unitsExprs = {k:v for k,v in vars(units).items() if isinstance(v, Expr)}
+__dimensions = {k:v for k,v in __unitsExprs.items() if isinstance(v, units.Dimension)}
 __lengths = {k:getattr(units, k) for k in units.find_unit(units.inch)}
 __areas = {k+'^2':v**2 for k,v in __lengths.items()}
 __masses = {k:getattr(units, k) for k in units.find_unit(units.gram)}
@@ -48,13 +48,6 @@ unitSubs = dict(__lengths, **__masses, **__forces, **__accelerations, **__volume
 class UnitMisMatchException(Exception):
     """Unit dimensions in expression are inconsistent."""
     pass
-
-
-# def show_expr(expr):
-#     self.logger.debug(f"\nExpression : '{expr}'")
-#     [self.logger.debug(f"{i:>20}: ", getattr(getattr(expr, i), '__call__', lambda: getattr(expr, i))()) for i in 'n simplify nsimplify normal is_constant as_poly is_number atoms args free_symbols evalf'.split(' ')]
-#     self.logger.debug(f"{'Symbols':>20}: ", expr.atoms(Symbol))
-#     self.logger.debug(f"{'Units':>20}: ", expr.atoms(units.Unit))
 
 
 class ComboBoxOptionSets():
@@ -136,7 +129,7 @@ class _SympyHelper():
             else:
                 raise Exception(f"expr is not Expr: {type(expr)}{expr}")
         except Exception as e:
-            self.logger.debug(e)
+            self.logger.debug((type(e), e))
             return e
 
         try:
