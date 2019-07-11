@@ -53,7 +53,8 @@ def test_constructor_expr_error(qtbot):
             assert getCurrentColor(widget.lineEdit, 'Background').names[0] == \
                    widget.defaultColors['blank'][0]
         else:
-            assert getCurrentColor(widget.lineEdit, 'Background').names[0] == widget.defaultColors['error' if e[2] else 'default'][0]
+            assert getCurrentColor(widget.lineEdit, 'Background').names[0] == \
+                   widget.defaultColors['error' if e[2] else 'default'][0]
 
 
 def test_expr_error(qtbot):
@@ -73,9 +74,7 @@ def test_constructor_math(qtbot):
     assert isinstance(syms.pop(), Symbol)
     with pytest.raises(KeyError):
         syms.pop()
-    wsyms = widget.getSymbols()
-    syms = {str(k):k for k in wsyms}
-    assert syms == widget.getSymbolsDict()
+    syms = widget.getSymbolsDict()
     assert 'a_1' in syms.keys()
     assert 'b' in syms.keys()
     assert widget.getValue().subs({'a_1':3, 'b':2}) == 8
@@ -85,12 +84,8 @@ def test_constructor_symbol(qtbot):
     widget = SympyAutoColorLineEdit(text='word')
     show(locals())
     syms = widget.getSymbols()
-    assert isinstance(syms.pop(), Symbol)
-    with pytest.raises(KeyError):
-        syms.pop()
-    wsyms = widget.getSymbols()
-    syms = {str(k): k for k in wsyms}
-    assert syms == widget.getSymbolsDict()
+    assert syms == {Symbol('word')}
+    syms = widget.getSymbolsDict()
     assert 'word' in syms.keys()
     assert widget.getValue().subs({'word': 3}) == 3
 
@@ -106,32 +101,28 @@ def test_constructor_symbol(qtbot):
     assert widget.getError() is False
 
     syms = widget.getSymbols()
-    assert isinstance(syms.pop(), Symbol)
-    assert isinstance(syms.pop(), Symbol)
-    with pytest.raises(KeyError):
-        syms.pop()
-    wsyms = widget.getSymbols()
-    syms = {str(k): k for k in wsyms}
-    assert syms == widget.getSymbolsDict()
+    assert 2 == len(syms)
+    assert all(isinstance(s, Symbol) for s in syms)
+    syms = widget.getSymbolsDict()
     assert 'word' in syms.keys()
     assert 'expon' in syms.keys()
     assert widget.getValue().subs({'word': 3, 'expon': 3}) == 24
 
 
 def test_unit_consistency_good(qtbot):
-    sew = SympyAutoColorLineEdit()
+    widget = SympyAutoColorLineEdit()
     for e in ['mm*3*b', 'mm*3*b + 2*yard', 'mm*3*b + 2*inch']:
-        sew.setText(e)
-        assert sew.getError() is False
-        v = sew.getValue()
-        e = parse_expr(e, local_dict=unitSubs)
-        testLogger.debug((type(v), v, type(e), e))
-        assert v == e
+        widget.setText(e)
+        assert widget.getError() is False
+        v = widget.getValue()
+        ex = parse_expr(e, local_dict=unitSubs)
+        testLogger.debug((type(v), v, type(ex), ex))
+        assert v == ex
 
 
 def test_unit_consistency_bad(qtbot):
-    sew = SympyAutoColorLineEdit()
+    widget = SympyAutoColorLineEdit()
     for e in ['mm*3*b + 2', 'mm*3*b + 2*kg', 'mm*3*b + 2*pound', 'mm*3*b + 2*N', '1*inch + 2*mm**2']:
         testLogger.debug(f"e = {e}")
         with pytest.raises(UnitMisMatchException):
-            sew.unitsAreConsistent(parse_expr(e, local_dict=unitSubs))
+            widget.unitsAreConsistent(parse_expr(e, local_dict=unitSubs))

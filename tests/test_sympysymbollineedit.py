@@ -44,7 +44,6 @@ def test_constructor_error(qtbot):
 
     widget = SympySymbolLineEdit(text='123')
     show(locals())
-    assert widget.text() == '123'
     assert widget.getError()
     assert getCurrentColor(widget.lineEdit, 'Background').names[0] == widget.defaultColors['error'][0]
     assert widget.getSymbols() == set()
@@ -62,4 +61,3 @@ def test_symbol_name_error(qtbot):
         logging.debug(e)
         widget.setText(e[0])
         assert bool(widget.getError()) is not e[3]
-

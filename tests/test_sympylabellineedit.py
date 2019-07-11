@@ -6,6 +6,7 @@ from qt_utils import getCurrentColor
 from . import *
 import logging
 import sys
+from sympy import Symbol
 
 from PyQt5.Qt import QApplication
 
@@ -25,6 +26,7 @@ def test_basic_constructor(qtbot):
     show(locals())
     assert widget.getError() is False
     assert getCurrentColor(widget.lineEdit, 'Background').names[0] == widget.defaultColors['default'][0]
+    assert widget.getSymbols() == {Symbol('text')}
 
 
 def test_constructor_label(qtbot):

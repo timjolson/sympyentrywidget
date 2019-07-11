@@ -2,7 +2,7 @@ from generalUtils.sympy_utils import expr_is_safe
 from entryWidget import EntryWidget, AutoColorLineEdit, LabelLineEdit
 from sympy import Symbol, sympify, Expr
 from sympy.physics import units
-from sympy.physics.units.util import check_dimensions, dim_simplify, quantity_simplify
+from sympy.physics.units.util import check_dimensions, quantity_simplify
 from sympy.parsing.sympy_parser import parse_expr, TokenError
 from keyword import iskeyword
 import logging
@@ -169,6 +169,7 @@ class _SympyHelper():
     def unitsAreConsistent(self, expr, target_units=None):
         self.logger.log(logging.DEBUG-1, f'unitsAreConsistent({expr},{target_units})')
         try:
+            # TODO: rewrite to use check_dimension(expr)
             f, d = units.Quantity._collect_factor_and_dimension(expr)
         except ValueError as e:
             raise UnitMisMatchException
@@ -177,6 +178,8 @@ class _SympyHelper():
                 if isinstance(target_units, str):
                     target_units = unitSubs[target_units]
                 self.logger.log(logging.DEBUG-1, (target_units, 'has: ', [(s, s.has(units.Unit)) for s in target_units.atoms()]))
+
+                # TODO: rewrite to use check_dimension(expr)
                 # if isinstance(target_units, (units.Unit, units.Quantity)):
                 if any(s.has(units.Unit) for s in target_units.atoms()):
                     f, td = units.Quantity._collect_factor_and_dimension(target_units)
@@ -299,3 +302,7 @@ class SympyEntryWidget(EntryWidget, _SympyHelper):
 
 __all__ = ['SympyAutoColorLineEdit', 'SympyLabelLineEdit', 'SympyEntryWidget', 'SympySymbolLineEdit', 'units',
            'unitSubs', 'UnitMisMatchException']
+
+if __name__ == '__main__':
+    from qt_utils.designer import install_plugin_files
+    install_plugin_files('sympyentrywidget_designer_plugin.py')
