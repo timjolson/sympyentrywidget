@@ -3,9 +3,9 @@ from PyQt5.Qt import QApplication
 from PyQt5 import QtCore  # for mouse click events
 from qt_utils.colors import rgb
 
-from entryWidget import AutoColorLineEdit, LabelLineEdit, EntryWidget
-from sympyEntryWidget import (SympyAutoColorLineEdit, SympySymbolLineEdit,
-                              SympyLabelLineEdit, SympyEntryWidget, ComboBoxOptionSets)
+from entrywidget import AutoColorLineEdit, LabelLineEdit, EntryWidget
+from sympyentrywidget import (SympyExprEdit, SympySymbolEdit,
+                              SympyLabelEdit, SympyEntryWidget, ComboBoxOptionSets)
 
 import sys
 import logging
@@ -68,7 +68,7 @@ autocolor = AutoColorLineEdit(window, text='AutoColor')
 autocolor.errorCheck = lambda: check_error_typed(autocolor)
 
 # AutoColorLineEdit, where expression is tested for safe sympy usage
-sympyauto = SympyAutoColorLineEdit(window, text='SympyAutoColor')
+sympyauto = SympyExprEdit(window, text='SympyAutoColor')
 sympyauto.textChanged.connect(lambda: show_symbols(sympyauto))
 
 # AutoColorLineEdit with a QLabel
@@ -76,11 +76,11 @@ labeledit = LabelLineEdit(window, label='result', text='3*mm + 2*inch')
 labeledit.editingFinished.connect(lambda: change_label_to_result(labeledit))
 
 # AutoColorLineEdit with a QLabel, where expression is tested for safe sympy usage
-sympylabel = SympyLabelLineEdit(window, label='SympyLabel', text='sin(2*x)+3*pi/4.1')
+sympylabel = SympyLabelEdit(window, label='SympyLabel', text='sin(2*x)+3*pi/4.1')
 sympylabel.editingFinished.connect(lambda: sub_x(sympylabel))
 
 # AutoColorLineEdit with a QLabel, where expression is tested for safe sympy usage AS A SYMBOL
-sympysymbol = SympySymbolLineEdit(window, label="SympySymbol")
+sympysymbol = SympySymbolEdit(window, label="SympySymbol")
 sympysymbol.editingFinished.connect(lambda: show_symbols(sympysymbol))
 
 # AutoColorLineEdit, QLabel, and a QComboBox

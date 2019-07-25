@@ -1,4 +1,4 @@
-from entryWidget import EntryWidget
+from entrywidget import EntryWidget
 from copy import copy
 
 

@@ -1,13 +1,11 @@
 from qt_utils.designer import WidgetPluginFactory
 
-from sympyEntryWidget import \
-    SympyAutoColorLineEdit, SympyEntryWidget, SympyLabelLineEdit, SympySymbolLineEdit
+from sympyentrywidget import \
+    SympyExprEdit, SympyEntryWidget, SympySymbolEdit
 
-SympyAutoColorLineEditPlugin = WidgetPluginFactory(SympyAutoColorLineEdit,
+SympyAutoColorLineEditPlugin = WidgetPluginFactory(SympyExprEdit,
                                                    toolTip='QLineEdit with Sympy error checking and automatic colors')
-SympyLabelLineEditPlugin = WidgetPluginFactory(SympyLabelLineEdit,
-                                               toolTip='QLabel and SympyAutoColorLineEdit')
-SympySymbolLineEditPlugin = WidgetPluginFactory(SympySymbolLineEdit,
-                                                toolTip='SympyLabelLineEdit for creating sympy.Symbol')
+SympySymbolLineEditPlugin = WidgetPluginFactory(SympySymbolEdit,
+                                                toolTip='SympyLabelEdit for creating sympy.Symbol')
 SympyEntryWidgetPlugin = WidgetPluginFactory(SympyEntryWidget,
-                                             toolTip='SympyLabelLineEdit and QComboBox for unit conversions')
+                                             toolTip='SympyLabelEdit and QComboBox for unit conversions')

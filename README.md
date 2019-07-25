@@ -1,13 +1,12 @@
-# sympyEntryWidget
-[EntryWidget](https://github.com/timjolson/entrywidget.git) extension with sympy backend to support symbolic/mathematic evaluation and unit conversions.
-
+# sympyentrywidget
+[AutoColorLineEdit//EntryWidget](https://github.com/timjolson/entrywidget.git) extension with sympy backend to support symbolic/mathematic evaluation and unit conversions.
 
 ## Classes:
     
-    SympyAutoColorLineEdit  # QLineEdit with automatic colors
-    SympyLabelLineEdit  # SympyAutoColorLineEdit with a QLabel on left side
-    SympySymbolLineEdit  # SympyAutoColorLineEdit with a QLabel on left side, turns entry into a sympy.Symbol
-    SympyEntryWidget  # SympyLabelLineEdit with QComboBox on right side, evaluates and converts expression with selected units
+    SympySymbolEdit  # turns entry into a sympy.Symbol
+    SympyExprEdit  # evaluates entry mathematically (or into a sympy.Symbol)
+    SympyUnitEdit  # SympyExprEdit, includes sympy.units support
+    SympyEntryWidget  # SympyUnitEdit with QComboBox on right side, evaluates and converts expression to selected units
 
 ## Installation
 
@@ -17,7 +16,7 @@
 
 ## SympyEntryWidget
 
-    entrywidget.EntryWidget
+    subclass of entrywidget.EntryWidget
     
     Additional methods:
         getValue  # get expression including/converted to the widget's units (returns None if there is an error)
@@ -42,8 +41,9 @@ Special methods in all classes
     getExprDimensions  # get simplified dimension of expression (e.g. 'length', 'mass', 'length/time')
     
     # error methods for specific use cases
-    isExprError  # checks isNotSafeError, isKeywordError, then tries to evaluate expression
+    processExpr  # checks isNotSafeError, isKeywordError, then tries to evaluate expression
+    processExprUnits  # checks processExpr, then checks for unit consistency
     isKeywordError  # expression is a python keyword 
     isNotSafeError  # unsafe use of attribute access '.'
     isNotIdentifierError  # invalid python 'variable' name
-    isSymbolError  # cannot be sympy symbol name
+    exprToSymbol  # cannot be sympy symbol name

@@ -1,7 +1,6 @@
 import pytest
-from sympyEntryWidget import SympyAutoColorLineEdit, unitSubs, units, UnitMisMatchException
+from sympyentrywidget import SympyUnitEdit, unitSubs, units, UnitMisMatchException, expr_safe_check
 from qt_utils.helpers_for_tests import *
-from generalUtils.sympy_utils import expr_safe_check
 from qt_utils import getCurrentColor
 from sympy import Symbol
 from sympy.parsing.sympy_parser import parse_expr
@@ -17,57 +16,24 @@ testLogger = logging.getLogger('testLogger')
 
 
 def test_constructor(qtbot):
-    widget = SympyAutoColorLineEdit()
+    widget = SympyUnitEdit()
     show(locals())
     assert widget.getError() is None
-    assert getCurrentColor(widget.lineEdit, 'Background').names[0] == widget.defaultColors['blank'][0]
+    assert getCurrentColor(widget, 'Background').names[0] == widget.defaultColors['blank'][0]
     assert set() == widget.getSymbols()
     assert dict() == widget.getSymbolsDict()
 
 
 def test_constructor_text(qtbot):
-    widget = SympyAutoColorLineEdit(text='text')
+    widget = SympyUnitEdit(text='text')
     show(locals())
     assert bool(widget.getError()) is False
-    assert getCurrentColor(widget.lineEdit, 'Background').names[0] == widget.defaultColors['default'][0]
+    assert getCurrentColor(widget, 'Background').names[0] == widget.defaultColors['default'][0]
     assert widget.getSymbols() == {Symbol('text')}
 
 
-def test_constructor_units(qtbot):
-    widget = SympyAutoColorLineEdit(text='2*mm')
-    show(locals())
-    assert widget.getError() is False
-    assert getCurrentColor(widget.lineEdit, 'Background').names[0] == widget.defaultColors['default'][0]
-    assert widget.getSymbols() == set()
-    assert widget.getExprUnits() == {units.mm}
-    assert widget.getExprDimensions() == units.Dimension('length')
-
-
-def test_constructor_expr_error(qtbot):
-    for e in expr_safe_check:
-        testLogger.debug(f"e = {e}")
-        widget = SympyAutoColorLineEdit(text=e[0])
-        show(locals())
-        assert bool(widget.getError()) is e[2]
-        if e[0] == '':
-            assert getCurrentColor(widget.lineEdit, 'Background').names[0] == \
-                   widget.defaultColors['blank'][0]
-        else:
-            assert getCurrentColor(widget.lineEdit, 'Background').names[0] == \
-                   widget.defaultColors['error' if e[2] else 'default'][0]
-
-
-def test_expr_error(qtbot):
-    widget = SympyAutoColorLineEdit()
-    show(locals())
-
-    for e in expr_safe_check:
-        widget.setText(e[0])
-        assert bool(widget.getError()) is e[2]
-
-
 def test_constructor_math(qtbot):
-    widget = SympyAutoColorLineEdit(text='2*a_1 + b')
+    widget = SympyUnitEdit(text='2*a_1 + b')
     show(locals())
     syms = widget.getSymbols()
     assert isinstance(syms.pop(), Symbol)
@@ -77,17 +43,17 @@ def test_constructor_math(qtbot):
     syms = widget.getSymbolsDict()
     assert 'a_1' in syms.keys()
     assert 'b' in syms.keys()
-    assert widget.getValue().subs({'a_1':3, 'b':2}) == 8
+    assert widget.getExpr().subs({'a_1':3, 'b':2}) == 8
 
 
 def test_constructor_symbol(qtbot):
-    widget = SympyAutoColorLineEdit(text='word')
+    widget = SympyUnitEdit(text='word')
     show(locals())
     syms = widget.getSymbols()
     assert syms == {Symbol('word')}
     syms = widget.getSymbolsDict()
     assert 'word' in syms.keys()
-    assert widget.getValue().subs({'word': 3}) == 3
+    assert widget.getExpr().subs({'word': 3}) == 3
 
     # 'var' is a function somewhere in sympy
     widget.setText('word * 2**var')
@@ -106,23 +72,57 @@ def test_constructor_symbol(qtbot):
     syms = widget.getSymbolsDict()
     assert 'word' in syms.keys()
     assert 'expon' in syms.keys()
-    assert widget.getValue().subs({'word': 3, 'expon': 3}) == 24
+    assert widget.getExpr().subs({'word': 3, 'expon': 3}) == 24
+
+
+def test_constructor_units(qtbot):
+    widget = SympyUnitEdit(text='2*mm')
+    show(locals())
+    assert widget.getError() is False
+    assert getCurrentColor(widget, 'Background').names[0] == widget.defaultColors['default'][0]
+    assert widget.getSymbols() == set()
+    assert widget.getExpr().atoms(units.Unit) == {units.mm}
+    assert widget.getExprDimensions() == units.Dimension('length')
 
 
 def test_unit_consistency_good(qtbot):
-    widget = SympyAutoColorLineEdit()
+    widget = SympyUnitEdit()
     for e in ['mm*3*b', 'mm*3*b + 2*yard', 'mm*3*b + 2*inch']:
         widget.setText(e)
         assert widget.getError() is False
-        v = widget.getValue()
+        v = widget.getExpr()
         ex = parse_expr(e, local_dict=unitSubs)
         testLogger.debug((type(v), v, type(ex), ex))
-        assert v == ex
+        assert (v - ex).simplify() == 0
 
 
 def test_unit_consistency_bad(qtbot):
-    widget = SympyAutoColorLineEdit()
+    widget = SympyUnitEdit()
     for e in ['mm*3*b + 2', 'mm*3*b + 2*kg', 'mm*3*b + 2*pound', 'mm*3*b + 2*N', '1*inch + 2*mm**2']:
         testLogger.debug(f"e = {e}")
         with pytest.raises(UnitMisMatchException):
             widget.unitsAreConsistent(parse_expr(e, local_dict=unitSubs))
+
+
+def test_conversion_with_symbols(qtbot):
+    widget = SympyUnitEdit(text='(1*a)*b*mm')
+    assert widget.getSymbols() == {Symbol('a'), Symbol('b')}
+
+    expr = widget.getExpr()
+    conv = units.convert_to(expr, units.meter)
+    assert conv == units.meter * Symbol('a') * Symbol('b') / 1000
+    assert widget.convertTo('meter') == conv
+    assert widget.convertTo(units.meter) == conv
+
+
+def test_invalid_conversion(qtbot):
+    widget = SympyUnitEdit(text='(1*mm*a)*b')
+    assert widget.getSymbols() == {Symbol('a'), Symbol('b')}
+
+    testLogger.debug(widget.getExpr())
+    with pytest.raises(UnitMisMatchException):
+        widget.convertTo('kg')
+
+    widget.setText('(1*mm*a)*b')
+    with pytest.raises(UnitMisMatchException):
+        widget.convertTo(units.m*units.m)

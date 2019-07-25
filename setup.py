@@ -2,8 +2,8 @@ from setuptools import setup, find_packages
 
 
 setup(
-    name='sympyEntryWidget',
-    version="0.7",
+    name='sympyentrywidget',
+    version="0.8",
     packages = find_packages(),
     install_requires = ['PyQt5', 'sympy'],
     dependency_links=[
