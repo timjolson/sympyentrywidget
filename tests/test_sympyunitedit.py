@@ -87,18 +87,27 @@ def test_constructor_units(qtbot):
 
 def test_unit_consistency_good(qtbot):
     widget = SympyUnitEdit()
-    for e in ['mm*3*b', 'mm*3*b + 2*yard', 'mm*3*b + 2*inch']:
+    for e in ['mm*3', 'mm*3 + 2*yard', 'mm*3 + 2*inch']:
+        testLogger.debug(e)
         widget.setText(e)
         assert widget.getError() is False
         v = widget.getExpr()
         ex = parse_expr(e, local_dict=unitSubs)
         testLogger.debug((type(v), v, type(ex), ex))
-        assert (v - ex).simplify() == 0
+        assert abs(widget.getExpr() - ex).simplify() < units.inch*1e-15
+        assert widget.getExpr() - ex == 0
+        assert abs(widget.getValue() - ex).simplify() < units.inch*1e-15
+        assert widget.getValue() - ex == 0
+
+        assert abs(widget.getExpr() - ex) < units.inch*1e-15
+        assert widget.getExpr() - ex == 0
+        assert abs(widget.getValue() - ex) < units.inch*1e-15
+        assert widget.getValue() - ex == 0
 
 
 def test_unit_consistency_bad(qtbot):
     widget = SympyUnitEdit()
-    for e in ['mm*3*b + 2', 'mm*3*b + 2*kg', 'mm*3*b + 2*pound', 'mm*3*b + 2*N', '1*inch + 2*mm**2']:
+    for e in ['2 + 3*mm', 'mm*3 + 2', 'mm*3 + 2*kg', '1*inch + 2*mm**2']:
         testLogger.debug(f"e = {e}")
         with pytest.raises(UnitMisMatchException):
             widget.unitsAreConsistent(parse_expr(e, local_dict=unitSubs))
@@ -123,6 +132,5 @@ def test_invalid_conversion(qtbot):
     with pytest.raises(UnitMisMatchException):
         widget.convertTo('kg')
 
-    widget.setText('(1*mm*a)*b')
     with pytest.raises(UnitMisMatchException):
         widget.convertTo(units.m*units.m)
