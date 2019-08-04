@@ -1,4 +1,4 @@
-from sympyentrywidget import SympyEntryWidget, SympyExprEdit, SympyUnitEdit, SympySymbolEdit
+from sympyentrywidget import SympyEntryWidget, SympyExprEdit, SympyUnitEdit, SympyDimensionEdit, SympySymbolEdit
 from PyQt5.QtWidgets import QWidget, QVBoxLayout
 import logging
 import sys
@@ -37,6 +37,12 @@ unit.exprChanged.connect(lambda: print('SympyUnitEdit.exprChanged -> getExpr()',
 unit.exprChanged.connect(lambda: print('SympyUnitEdit.exprChanged -> getValue()', unit.getValue()))
 unit.valueChanged[object].connect(printer('SympyUnitEdit.valueChanged[object]'))
 layout.addWidget(unit)
+
+dim = SympyDimensionEdit(text='2*mm + 1*inch', dimension='length')
+dim.hasError[str].connect(printer('SympyDimensionEdit.hasError[str]'))
+dim.exprChanged[object].connect(printer('SympyDimensionEdit.exprChanged[object]'))
+dim.valueChanged[object].connect(printer('SympyDimensionEdit.valueChanged[object]'))
+layout.addWidget(dim)
 
 entry = SympyEntryWidget(text='3*mm + 1*inch', windowTitle='EntryWidget', objectName='EntryWidget',
                      options='length')

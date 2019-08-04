@@ -217,7 +217,7 @@ def convertTo(expr, unit):
     return _ret
 
 
-def parseExprUnits(text):
+def parseExprUnits(text, dimension=None):
     """Parse a string with units possibly included.
     See parseExpr for pre-processing steps.
 
@@ -252,7 +252,7 @@ def parseExprUnits(text):
         pass
 
     try:
-        unitsAreConsistent(expr)
+        unitsAreConsistent(expr, dimension)
     except UnitMisMatchError as e:
         raise e
     return expr
@@ -302,6 +302,12 @@ def unitsAreConsistent(expr, targetUnits=None):
 
     target_dim = getDimension(targetUnits)
     logger.log(logging.DEBUG-1, f"target_dim = {target_dim}")
+
+    if isinstance(targetUnits, units.Dimension):
+        if targetUnits.name == expr_dim.name:
+            return True
+        else:
+            raise UnitMisMatchError(f"{expr_dim} is not specified {target_dim}")
 
     # compare dimensions
     if expr_dim.name == 1 or expr_dim.name == target_dim.name:
@@ -541,6 +547,77 @@ class SympyUnitEdit(SympyExprEdit):
             return None
 
 
+class SympyDimensionEdit(SympyUnitEdit):
+    """SympyUnitEdit subclass, with output having an enforced dimension.
+    Added methods:
+        setDimension: set dimension of widget's output
+
+    written by Tim Olson - timjolson@user.noreplay.github.com
+    """
+    defaultArgs = SympyUnitEdit.defaultArgs.copy()
+    defaultArgs.update(dimension=units.Dimension('length'))
+
+    def __init__(self, parent=None, **kwargs):
+        dim = kwargs.pop('dimension', self.defaultArgs['dimension'])
+        if isinstance(dim, str):
+            dim = getattr(units, dim)
+            # dim = getattr(units, dim, units.Dimension(dim))
+        self._dimension = dim
+        SympyUnitEdit.__init__(self, parent, **kwargs)
+
+    @staticmethod
+    def errorCheck(self):
+        """Checks if self.text() makes is a valid sympy.Expr.
+        If expression contains units, checks they are compatible with self.dimension.
+        Sets self._expr to None or the sympy.Expr version of self.text().
+        Returns applicable error status.
+
+        :return: ExpressionError when relevant
+                 UnitMisMatchError when relevant
+                 False if no error
+                 None if resulting expression is None
+        """
+        self.logger.log(logging.DEBUG-1, f'errorCheck()')
+        try:
+            expr = parseExprUnits(self.text(), self._dimension)
+        except (ExpressionError, UnitMisMatchError) as e:
+            self.logger.log(logging.DEBUG-1, f'errorCheck() -> {repr(e)}')
+            self._expr = None
+            self.exprChanged[object].emit(None)
+            self.valueChanged[object].emit(None)
+            return e
+
+        if expr is None:
+            self.logger.log(logging.DEBUG-1, 'errorCheck() -> None')
+            self._expr = None
+            self.exprChanged[object].emit(None)
+            self.valueChanged[object].emit(None)
+            return None
+        # else:  # no problems
+        self.logger.log(logging.DEBUG-1, 'errorCheck() -> False')
+        self._expr = quantity_simplify(expr)
+        self.exprChanged[object].emit(self._expr)
+        self.valueChanged[object].emit(self._expr.simplify().evalf())
+        return False
+
+    def setDimension(self, dim):
+        """Set the units.Dimension of `self`.
+        :return:
+        """
+        self.logger.debug(f"setDimension({type(dim), dim})")
+        if isinstance(dim, str):
+            dim = getattr(units, dim, units.Dimension(dim))
+        self._dimension = dim
+        self.setError(self.errorCheck(self))
+
+    def getDimension(self):
+        """Get the units.Dimension of `self`.
+        :return: units.Dimension or None
+        """
+        return self._dimension
+    dimension = pyqtProperty(str, lambda s: str(s.getDimension().name), setDimension)
+
+
 class SympyEntryWidget(EntryWidget):
     """entrywidget.EntryWidget subclass using SympyUnitEdit in place of AutoColorLineEdit.
 
@@ -727,8 +804,9 @@ class SympyEntryWidget(EntryWidget):
     setSelected = setUnits
 
 
-__all__ = ['SympySymbolEdit', 'SympyExprEdit', 'SympyUnitEdit', 'SympyEntryWidget', 'units',
-           'unitSubs', 'UnitMisMatchError', 'ExpressionError', 'unitsAreConsistent', 'parseExpr', 'parseExprUnits',
+__all__ = ['SympySymbolEdit', 'SympyExprEdit', 'SympyUnitEdit', 'SympyDimensionEdit',
+           'SympyEntryWidget', 'units', 'unitSubs', 'UnitMisMatchError',
+           'ExpressionError', 'unitsAreConsistent', 'parseExpr', 'parseExprUnits',
            'convertTo', 'getDimension', 'CommonUnits']
 
 if __name__ == '__main__':

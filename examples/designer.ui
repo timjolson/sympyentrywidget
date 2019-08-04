@@ -6,74 +6,100 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>791</width>
-    <height>344</height>
+    <width>693</width>
+    <height>190</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout">
-   <item row="1" column="1">
+  <layout class="QGridLayout" name="gridLayout" columnstretch="0,1,0,0,0,0,0,0,0,2">
+   <item row="2" column="1">
     <widget class="SympyExprEdit" name="sympyExprEdit">
+     <property name="minimumSize">
+      <size>
+       <width>120</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>120</width>
+       <height>16777215</height>
+      </size>
+     </property>
      <property name="text">
       <string>sin(pi/4)</string>
      </property>
     </widget>
    </item>
-   <item row="0" column="4" rowspan="5">
+   <item row="5" column="9">
+    <widget class="QLabel" name="label_17">
+     <property name="text">
+      <string>TextLabel</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="9">
+    <widget class="QLabel" name="label_12">
+     <property name="text">
+      <string>TextLabel</string>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="4" rowspan="7">
     <widget class="Line" name="line">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
      </property>
     </widget>
    </item>
-   <item row="4" column="1">
-    <widget class="SympyEntryWidget" name="sympyEntryWidget"/>
+   <item row="6" column="1">
+    <widget class="SympyEntryWidget" name="sympyEntryWidget">
+     <property name="minimumSize">
+      <size>
+       <width>120</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>120</width>
+       <height>16777215</height>
+      </size>
+     </property>
+     <property name="text_" stdset="0">
+      <string>2*inch</string>
+     </property>
+    </widget>
    </item>
-   <item row="3" column="1">
+   <item row="4" column="1">
     <widget class="SympySymbolEdit" name="sympySymbolEdit">
+     <property name="minimumSize">
+      <size>
+       <width>120</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>120</width>
+       <height>16777215</height>
+      </size>
+     </property>
      <property name="text">
       <string>name_1</string>
      </property>
     </widget>
    </item>
-   <item row="4" column="7">
-    <widget class="QTextBrowser" name="textBrowser_4"/>
-   </item>
-   <item row="3" column="7">
-    <widget class="QTextBrowser" name="textBrowser_3"/>
-   </item>
-   <item row="1" column="5">
+   <item row="2" column="5">
     <widget class="QLabel" name="label">
-     <property name="minimumSize">
-      <size>
-       <width>100</width>
-       <height>0</height>
-      </size>
-     </property>
      <property name="maximumSize">
       <size>
-       <width>100</width>
-       <height>16777215</height>
-      </size>
-     </property>
-     <property name="text">
-      <string>TextLabel</string>
-     </property>
-    </widget>
-   </item>
-   <item row="3" column="5">
-    <widget class="QLabel" name="label_3">
-     <property name="minimumSize">
-      <size>
-       <width>100</width>
-       <height>0</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>100</width>
+       <width>120</width>
        <height>16777215</height>
       </size>
      </property>
@@ -83,16 +109,23 @@
     </widget>
    </item>
    <item row="4" column="5">
+    <widget class="QLabel" name="label_3">
+     <property name="maximumSize">
+      <size>
+       <width>120</width>
+       <height>16777215</height>
+      </size>
+     </property>
+     <property name="text">
+      <string>TextLabel</string>
+     </property>
+    </widget>
+   </item>
+   <item row="6" column="5">
     <widget class="QLabel" name="label_4">
-     <property name="minimumSize">
-      <size>
-       <width>100</width>
-       <height>0</height>
-      </size>
-     </property>
      <property name="maximumSize">
       <size>
-       <width>100</width>
+       <width>120</width>
        <height>16777215</height>
       </size>
      </property>
@@ -101,20 +134,11 @@
      </property>
     </widget>
    </item>
-   <item row="2" column="7">
-    <widget class="QTextBrowser" name="textBrowser_2"/>
-   </item>
-   <item row="2" column="5">
+   <item row="3" column="5">
     <widget class="QLabel" name="label_2">
-     <property name="minimumSize">
-      <size>
-       <width>100</width>
-       <height>0</height>
-      </size>
-     </property>
      <property name="maximumSize">
       <size>
-       <width>100</width>
+       <width>120</width>
        <height>16777215</height>
       </size>
      </property>
@@ -123,22 +147,46 @@
      </property>
     </widget>
    </item>
-   <item row="2" column="1">
+   <item row="3" column="1">
     <widget class="SympyUnitEdit" name="sympyUnitEdit">
+     <property name="minimumSize">
+      <size>
+       <width>120</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>120</width>
+       <height>16777215</height>
+      </size>
+     </property>
      <property name="text">
       <string>2*mm+1*inch</string>
      </property>
     </widget>
    </item>
-   <item row="1" column="0">
+   <item row="2" column="0">
     <widget class="QLabel" name="label_5">
+     <property name="minimumSize">
+      <size>
+       <width>150</width>
+       <height>0</height>
+      </size>
+     </property>
      <property name="text">
       <string>SympyExprEdit</string>
      </property>
     </widget>
    </item>
-   <item row="3" column="0">
+   <item row="4" column="0">
     <widget class="QLabel" name="label_7">
+     <property name="minimumSize">
+      <size>
+       <width>150</width>
+       <height>0</height>
+      </size>
+     </property>
      <property name="text">
       <string>SympySymbolEdit</string>
      </property>
@@ -147,7 +195,7 @@
    <item row="0" column="5">
     <widget class="QLabel" name="label_9">
      <property name="text">
-      <string>ExprChanged</string>
+      <string>Expr</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>
@@ -157,28 +205,187 @@
    <item row="0" column="7">
     <widget class="QLabel" name="label_10">
      <property name="text">
-      <string>ValueChanged</string>
+      <string>Value</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>
      </property>
     </widget>
    </item>
-   <item row="2" column="0">
+   <item row="3" column="0">
     <widget class="QLabel" name="label_6">
+     <property name="minimumSize">
+      <size>
+       <width>150</width>
+       <height>0</height>
+      </size>
+     </property>
      <property name="text">
       <string>SympyUnitEdit</string>
      </property>
     </widget>
    </item>
-   <item row="4" column="0">
+   <item row="6" column="0">
     <widget class="QLabel" name="label_8">
+     <property name="minimumSize">
+      <size>
+       <width>150</width>
+       <height>0</height>
+      </size>
+     </property>
      <property name="text">
       <string>SympyEntryWidget</string>
      </property>
     </widget>
    </item>
-   <item row="0" column="3">
+   <item row="0" column="6" rowspan="7">
+    <widget class="Line" name="line_3">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+    </widget>
+   </item>
+   <item row="5" column="0">
+    <widget class="QLabel" name="label_16">
+     <property name="minimumSize">
+      <size>
+       <width>150</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="text">
+      <string>SympyDimensionEdit</string>
+     </property>
+    </widget>
+   </item>
+   <item row="5" column="1">
+    <widget class="SympyDimensionEdit" name="sympydimensionedit">
+     <property name="minimumSize">
+      <size>
+       <width>120</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>120</width>
+       <height>16777215</height>
+      </size>
+     </property>
+     <property name="text">
+      <string>1*mm</string>
+     </property>
+    </widget>
+   </item>
+   <item row="5" column="5">
+    <widget class="QLabel" name="label_18">
+     <property name="maximumSize">
+      <size>
+       <width>120</width>
+       <height>16777215</height>
+      </size>
+     </property>
+     <property name="text">
+      <string>TextLabel</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="7">
+    <widget class="QLabel" name="label_20">
+     <property name="minimumSize">
+      <size>
+       <width>120</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>120</width>
+       <height>16777215</height>
+      </size>
+     </property>
+     <property name="text">
+      <string>TextLabel</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="7">
+    <widget class="QLabel" name="label_19">
+     <property name="minimumSize">
+      <size>
+       <width>120</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>120</width>
+       <height>16777215</height>
+      </size>
+     </property>
+     <property name="text">
+      <string>TextLabel</string>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="7">
+    <widget class="QLabel" name="label_21">
+     <property name="minimumSize">
+      <size>
+       <width>120</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>120</width>
+       <height>16777215</height>
+      </size>
+     </property>
+     <property name="text">
+      <string>N/A</string>
+     </property>
+    </widget>
+   </item>
+   <item row="5" column="7">
+    <widget class="QLabel" name="label_22">
+     <property name="minimumSize">
+      <size>
+       <width>120</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>120</width>
+       <height>16777215</height>
+      </size>
+     </property>
+     <property name="text">
+      <string>TextLabel</string>
+     </property>
+    </widget>
+   </item>
+   <item row="6" column="7">
+    <widget class="QLabel" name="label_23">
+     <property name="minimumSize">
+      <size>
+       <width>120</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>120</width>
+       <height>16777215</height>
+      </size>
+     </property>
+     <property name="text">
+      <string>TextLabel</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="9">
     <widget class="QLabel" name="label_11">
      <property name="text">
       <string>Error</string>
@@ -188,42 +395,8 @@
      </property>
     </widget>
    </item>
-   <item row="1" column="3">
-    <widget class="QLabel" name="label_12">
-     <property name="minimumSize">
-      <size>
-       <width>100</width>
-       <height>0</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>100</width>
-       <height>16777215</height>
-      </size>
-     </property>
-     <property name="text">
-      <string>TextLabel</string>
-     </property>
-     <property name="wordWrap">
-      <bool>true</bool>
-     </property>
-    </widget>
-   </item>
-   <item row="2" column="3">
+   <item row="3" column="9">
     <widget class="QLabel" name="label_13">
-     <property name="minimumSize">
-      <size>
-       <width>100</width>
-       <height>0</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>100</width>
-       <height>16777215</height>
-      </size>
-     </property>
      <property name="text">
       <string>TextLabel</string>
      </property>
@@ -232,20 +405,8 @@
      </property>
     </widget>
    </item>
-   <item row="3" column="3">
+   <item row="4" column="9">
     <widget class="QLabel" name="label_14">
-     <property name="minimumSize">
-      <size>
-       <width>100</width>
-       <height>0</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>100</width>
-       <height>16777215</height>
-      </size>
-     </property>
      <property name="text">
       <string>TextLabel</string>
      </property>
@@ -254,20 +415,8 @@
      </property>
     </widget>
    </item>
-   <item row="4" column="3">
+   <item row="6" column="9">
     <widget class="QLabel" name="label_15">
-     <property name="minimumSize">
-      <size>
-       <width>100</width>
-       <height>0</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>100</width>
-       <height>16777215</height>
-      </size>
-     </property>
      <property name="text">
       <string>TextLabel</string>
      </property>
@@ -276,22 +425,12 @@
      </property>
     </widget>
    </item>
-   <item row="0" column="2" rowspan="5">
+   <item row="0" column="8" rowspan="7">
     <widget class="Line" name="line_2">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
      </property>
     </widget>
-   </item>
-   <item row="0" column="6" rowspan="5">
-    <widget class="Line" name="line_3">
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
-    </widget>
-   </item>
-   <item row="1" column="7">
-    <widget class="QTextBrowser" name="textBrowser"/>
    </item>
   </layout>
  </widget>
@@ -321,6 +460,12 @@
    <container>1</container>
   </customwidget>
   <customwidget>
+   <class>SympyDimensionEdit</class>
+   <extends>SympyUnitEdit</extends>
+   <header>sympyentrywidget</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
    <class>SympySymbolEdit</class>
    <extends>AutoColorLineEdit</extends>
    <header>sympyentrywidget</header>
@@ -333,6 +478,12 @@
    <container>1</container>
   </customwidget>
  </customwidgets>
+ <tabstops>
+  <tabstop>sympyExprEdit</tabstop>
+  <tabstop>sympyUnitEdit</tabstop>
+  <tabstop>sympySymbolEdit</tabstop>
+  <tabstop>sympydimensionedit</tabstop>
+ </tabstops>
  <resources/>
  <connections>
   <connection>
@@ -342,12 +493,12 @@
    <slot>setText(QString)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>147</x>
-     <y>72</y>
+     <x>278</x>
+     <y>56</y>
     </hint>
     <hint type="destinationlabel">
-     <x>392</x>
-     <y>101</y>
+     <x>548</x>
+     <y>56</y>
     </hint>
    </hints>
   </connection>
@@ -358,28 +509,12 @@
    <slot>setText(QString)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>126</x>
-     <y>144</y>
+     <x>278</x>
+     <y>87</y>
     </hint>
     <hint type="destinationlabel">
-     <x>392</x>
-     <y>177</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>sympyUnitEdit</sender>
-   <signal>valueChanged(QString)</signal>
-   <receiver>textBrowser_2</receiver>
-   <slot>setPlainText(QString)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>221</x>
-     <y>154</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>497</x>
-     <y>177</y>
+     <x>548</x>
+     <y>87</y>
     </hint>
    </hints>
   </connection>
@@ -390,12 +525,12 @@
    <slot>setText(QString)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>221</x>
-     <y>230</y>
+     <x>278</x>
+     <y>118</y>
     </hint>
     <hint type="destinationlabel">
-     <x>392</x>
-     <y>253</y>
+     <x>548</x>
+     <y>118</y>
     </hint>
    </hints>
   </connection>
@@ -406,12 +541,12 @@
    <slot>setText(QString)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>132</x>
-     <y>59</y>
+     <x>278</x>
+     <y>56</y>
     </hint>
     <hint type="destinationlabel">
-     <x>229</x>
-     <y>63</y>
+     <x>413</x>
+     <y>56</y>
     </hint>
    </hints>
   </connection>
@@ -422,12 +557,12 @@
    <slot>setText(QString)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>133</x>
-     <y>132</y>
+     <x>278</x>
+     <y>87</y>
     </hint>
     <hint type="destinationlabel">
-     <x>294</x>
-     <y>177</y>
+     <x>413</x>
+     <y>87</y>
     </hint>
    </hints>
   </connection>
@@ -438,28 +573,12 @@
    <slot>setText(QString)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>147</x>
-     <y>211</y>
+     <x>278</x>
+     <y>118</y>
     </hint>
     <hint type="destinationlabel">
-     <x>294</x>
-     <y>253</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>sympyEntryWidget</sender>
-   <signal>valueChanged(QString)</signal>
-   <receiver>textBrowser_4</receiver>
-   <slot>setPlainText(QString)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>143</x>
-     <y>288</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>439</x>
-     <y>310</y>
+     <x>413</x>
+     <y>118</y>
     </hint>
    </hints>
   </connection>
@@ -471,11 +590,11 @@
    <hints>
     <hint type="sourcelabel">
      <x>178</x>
-     <y>281</y>
+     <y>158</y>
     </hint>
     <hint type="destinationlabel">
-     <x>337</x>
-     <y>295</y>
+     <x>548</x>
+     <y>180</y>
     </hint>
    </hints>
   </connection>
@@ -486,28 +605,108 @@
    <slot>setText(QString)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>209</x>
-     <y>271</y>
+     <x>278</x>
+     <y>180</y>
     </hint>
     <hint type="destinationlabel">
-     <x>261</x>
-     <y>274</y>
+     <x>413</x>
+     <y>180</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>sympydimensionedit</sender>
+   <signal>errorChanged(QString)</signal>
+   <receiver>label_17</receiver>
+   <slot>setText(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>278</x>
+     <y>149</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>413</x>
+     <y>149</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>sympydimensionedit</sender>
+   <signal>exprChanged(QString)</signal>
+   <receiver>label_18</receiver>
+   <slot>setText(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>278</x>
+     <y>149</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>548</x>
+     <y>149</y>
     </hint>
    </hints>
   </connection>
   <connection>
    <sender>sympyExprEdit</sender>
    <signal>valueChanged(QString)</signal>
-   <receiver>textBrowser</receiver>
-   <slot>setPlainText(QString)</slot>
+   <receiver>label_20</receiver>
+   <slot>setText(QString)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>118</x>
-     <y>61</y>
+     <x>278</x>
+     <y>56</y>
     </hint>
     <hint type="destinationlabel">
-     <x>497</x>
-     <y>101</y>
+     <x>607</x>
+     <y>44</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>sympyUnitEdit</sender>
+   <signal>valueChanged(QString)</signal>
+   <receiver>label_19</receiver>
+   <slot>setText(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>278</x>
+     <y>87</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>643</x>
+     <y>81</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>sympydimensionedit</sender>
+   <signal>valueChanged(QString)</signal>
+   <receiver>label_22</receiver>
+   <slot>setText(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>278</x>
+     <y>149</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>646</x>
+     <y>137</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>sympyEntryWidget</sender>
+   <signal>valueChanged(QString)</signal>
+   <receiver>label_23</receiver>
+   <slot>setText(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>270</x>
+     <y>167</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>607</x>
+     <y>170</y>
     </hint>
    </hints>
   </connection>
