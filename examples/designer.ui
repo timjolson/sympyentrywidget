@@ -1,0 +1,515 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>791</width>
+    <height>344</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="1" column="1">
+    <widget class="SympyExprEdit" name="sympyExprEdit">
+     <property name="text">
+      <string>sin(pi/4)</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="4" rowspan="5">
+    <widget class="Line" name="line">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="1">
+    <widget class="SympyEntryWidget" name="sympyEntryWidget"/>
+   </item>
+   <item row="3" column="1">
+    <widget class="SympySymbolEdit" name="sympySymbolEdit">
+     <property name="text">
+      <string>name_1</string>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="7">
+    <widget class="QTextBrowser" name="textBrowser_4"/>
+   </item>
+   <item row="3" column="7">
+    <widget class="QTextBrowser" name="textBrowser_3"/>
+   </item>
+   <item row="1" column="5">
+    <widget class="QLabel" name="label">
+     <property name="minimumSize">
+      <size>
+       <width>100</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>100</width>
+       <height>16777215</height>
+      </size>
+     </property>
+     <property name="text">
+      <string>TextLabel</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="5">
+    <widget class="QLabel" name="label_3">
+     <property name="minimumSize">
+      <size>
+       <width>100</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>100</width>
+       <height>16777215</height>
+      </size>
+     </property>
+     <property name="text">
+      <string>TextLabel</string>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="5">
+    <widget class="QLabel" name="label_4">
+     <property name="minimumSize">
+      <size>
+       <width>100</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>100</width>
+       <height>16777215</height>
+      </size>
+     </property>
+     <property name="text">
+      <string>TextLabel</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="7">
+    <widget class="QTextBrowser" name="textBrowser_2"/>
+   </item>
+   <item row="2" column="5">
+    <widget class="QLabel" name="label_2">
+     <property name="minimumSize">
+      <size>
+       <width>100</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>100</width>
+       <height>16777215</height>
+      </size>
+     </property>
+     <property name="text">
+      <string>TextLabel</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="1">
+    <widget class="SympyUnitEdit" name="sympyUnitEdit">
+     <property name="text">
+      <string>2*mm+1*inch</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QLabel" name="label_5">
+     <property name="text">
+      <string>SympyExprEdit</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="0">
+    <widget class="QLabel" name="label_7">
+     <property name="text">
+      <string>SympySymbolEdit</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="5">
+    <widget class="QLabel" name="label_9">
+     <property name="text">
+      <string>ExprChanged</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="7">
+    <widget class="QLabel" name="label_10">
+     <property name="text">
+      <string>ValueChanged</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="0">
+    <widget class="QLabel" name="label_6">
+     <property name="text">
+      <string>SympyUnitEdit</string>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="0">
+    <widget class="QLabel" name="label_8">
+     <property name="text">
+      <string>SympyEntryWidget</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="3">
+    <widget class="QLabel" name="label_11">
+     <property name="text">
+      <string>Error</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="3">
+    <widget class="QLabel" name="label_12">
+     <property name="minimumSize">
+      <size>
+       <width>100</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>100</width>
+       <height>16777215</height>
+      </size>
+     </property>
+     <property name="text">
+      <string>TextLabel</string>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="3">
+    <widget class="QLabel" name="label_13">
+     <property name="minimumSize">
+      <size>
+       <width>100</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>100</width>
+       <height>16777215</height>
+      </size>
+     </property>
+     <property name="text">
+      <string>TextLabel</string>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="3">
+    <widget class="QLabel" name="label_14">
+     <property name="minimumSize">
+      <size>
+       <width>100</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>100</width>
+       <height>16777215</height>
+      </size>
+     </property>
+     <property name="text">
+      <string>TextLabel</string>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="3">
+    <widget class="QLabel" name="label_15">
+     <property name="minimumSize">
+      <size>
+       <width>100</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>100</width>
+       <height>16777215</height>
+      </size>
+     </property>
+     <property name="text">
+      <string>TextLabel</string>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="2" rowspan="5">
+    <widget class="Line" name="line_2">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="6" rowspan="5">
+    <widget class="Line" name="line_3">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="7">
+    <widget class="QTextBrowser" name="textBrowser"/>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>AutoColorLineEdit</class>
+   <extends>QLineEdit</extends>
+   <header>entrywidget</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>EntryWidget</class>
+   <extends>QWidget</extends>
+   <header>entrywidget</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>SympyExprEdit</class>
+   <extends>SympySymbolEdit</extends>
+   <header>sympyentrywidget</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>SympyUnitEdit</class>
+   <extends>SympyExprEdit</extends>
+   <header>sympyentrywidget</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>SympySymbolEdit</class>
+   <extends>AutoColorLineEdit</extends>
+   <header>sympyentrywidget</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>SympyEntryWidget</class>
+   <extends>EntryWidget</extends>
+   <header>sympyentrywidget</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>sympyExprEdit</sender>
+   <signal>exprChanged(QString)</signal>
+   <receiver>label</receiver>
+   <slot>setText(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>147</x>
+     <y>72</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>392</x>
+     <y>101</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>sympyUnitEdit</sender>
+   <signal>exprChanged(QString)</signal>
+   <receiver>label_2</receiver>
+   <slot>setText(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>126</x>
+     <y>144</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>392</x>
+     <y>177</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>sympyUnitEdit</sender>
+   <signal>valueChanged(QString)</signal>
+   <receiver>textBrowser_2</receiver>
+   <slot>setPlainText(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>221</x>
+     <y>154</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>497</x>
+     <y>177</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>sympySymbolEdit</sender>
+   <signal>exprChanged(QString)</signal>
+   <receiver>label_3</receiver>
+   <slot>setText(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>221</x>
+     <y>230</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>392</x>
+     <y>253</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>sympyExprEdit</sender>
+   <signal>errorChanged(QString)</signal>
+   <receiver>label_12</receiver>
+   <slot>setText(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>132</x>
+     <y>59</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>229</x>
+     <y>63</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>sympyUnitEdit</sender>
+   <signal>errorChanged(QString)</signal>
+   <receiver>label_13</receiver>
+   <slot>setText(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>133</x>
+     <y>132</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>294</x>
+     <y>177</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>sympySymbolEdit</sender>
+   <signal>errorChanged(QString)</signal>
+   <receiver>label_14</receiver>
+   <slot>setText(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>147</x>
+     <y>211</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>294</x>
+     <y>253</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>sympyEntryWidget</sender>
+   <signal>valueChanged(QString)</signal>
+   <receiver>textBrowser_4</receiver>
+   <slot>setPlainText(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>143</x>
+     <y>288</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>439</x>
+     <y>310</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>sympyEntryWidget</sender>
+   <signal>exprChanged(QString)</signal>
+   <receiver>label_4</receiver>
+   <slot>setText(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>178</x>
+     <y>281</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>337</x>
+     <y>295</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>sympyEntryWidget</sender>
+   <signal>errorChanged(QString)</signal>
+   <receiver>label_15</receiver>
+   <slot>setText(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>209</x>
+     <y>271</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>261</x>
+     <y>274</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>sympyExprEdit</sender>
+   <signal>valueChanged(QString)</signal>
+   <receiver>textBrowser</receiver>
+   <slot>setPlainText(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>118</x>
+     <y>61</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>497</x>
+     <y>101</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>

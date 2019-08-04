@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='sympyentrywidget',
-    version="0.8",
+    version="0.85",
     packages = find_packages(),
     install_requires = ['PyQt5', 'sympy'],
     dependency_links=[
