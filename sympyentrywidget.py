@@ -14,43 +14,82 @@ import re
 logger = logging.getLogger(__name__)
 logger.addHandler(logging.NullHandler())
 
-__unitsExprs = {k:v for k,v in vars(units).items() if isinstance(v, Expr)}
-__dimensions = {k:v for k,v in __unitsExprs.items() if isinstance(v, units.Dimension)}
-__lengths = {k:getattr(units, k) for k in units.find_unit(units.inch)}
-__areas = {k+'^2':v**2 for k,v in __lengths.items()}
-__masses = {k:getattr(units, k) for k in units.find_unit(units.gram)}
-__masses.update(lbm=units.pound)
-__forces = {k:getattr(units, k) for k in units.find_unit(units.newton)}
-lbf = units.Quantity('pound-force', 'lbf')
-lbf.set_dimension(units.newton.dimension)
-lbf.set_scale_factor(units.pound.scale_factor)
-__forces.update(lbf=lbf)
-__accelerations = {k:getattr(units, k) for k in units.find_unit(units.gee)}
-__volumes = {k:getattr(units, k) for k in units.find_unit(units.liter)}
-__volumes.update(USgal=231*units.inch**3, UKgal=4.54609*units.liter)
-__volumes.update({k+'^3':v**3 for k,v in __lengths.items()})
-__pressures = {k:getattr(units, k) for k in units.find_unit(units.pascal)}
-__times = {k:getattr(units, k) for k in units.find_unit(units.minute)}
-# __angles = {k:getattr(units, k) for k in units.find_unit(units.radian)}
-# __velocities = {k:getattr(units, k) for k in units.find_unit(units.speed)}
-# __frequencies = {k:getattr(units, k) for k in units.find_unit(units.hertz)}
-# __information = {k:getattr(units, k) for k in units.find_unit(units.byte)}
-# __powers = {k:getattr(units, k) for k in units.find_unit(units.power)}
-# __voltages = {k:getattr(units, k) for k in units.find_unit(units.volts)}
-# __currents = {k:getattr(units, k) for k in units.find_unit(units.ampere)}
-# __charges = {k:getattr(units, k) for k in units.find_unit(units.coulomb)}
-# __lights = {k:getattr(units, k) for k in units.find_unit(units.luminosity)}
-# __resistances = {k:getattr(units, k) for k in units.find_unit(units.ohm)}
-# __amounts = {k:getattr(units, k) for k in units.find_unit(units.mol)}
-# __temperatures = {k:getattr(units, k) for k in units.find_unit(units.kelvin)}
-# __magneticdensities = {k:getattr(units, k) for k in units.find_unit(units.tesla)}
-# __magneticfluxes = {k:getattr(units, k) for k in units.find_unit(units.weber)}
-# __energies = {k:getattr(units, k) for k in units.find_unit(units.electronvolt)}
-# __capacitances = {k:getattr(units, k) for k in units.find_unit(units.farad)}
-# __inductances = {k:getattr(units, k) for k in units.find_unit(units.henry)}
 
-unitSubs = unit_subs = dict(__lengths, **__masses, **__forces, **__accelerations, **__volumes, **__pressures, **__times, **__areas)
-units.One = S.One
+class Storage:
+    USgal = units.Quantity('US gallon', 'USgal')
+    USgal.set_scale_factor(231*units.inch**3)
+    USgal.set_dimension(units.length**3)
+    UKgal = units.Quantity('UK gallon', 'UKgal')
+    UKgal.set_scale_factor(4.54609*units.liter)
+    UKgal.set_dimension(units.length**3)
+    lbf = units.Quantity('pound_force', 'lbf')
+    lbf.set_dimension(units.force)
+    lbf.set_scale_factor(units.pound.scale_factor)
+    MPa = megapascal = megapascals = units.Quantity('megapascal', 'MPa')
+    MPa.set_dimension(units.pressure)
+    MPa.set_scale_factor(1000*units.kPa)
+    GPa = gigapascal = gigapascals = units.Quantity('megapascal', 'GPa')
+    GPa.set_dimension(units.pressure)
+    GPa.set_scale_factor(1e6*units.kPa)
+    kN = kilonewton = kilonewtons = units.Quantity('kilonewton', 'kN')
+    kN.set_dimension(units.force)
+    kN.set_scale_factor(1000*units.newton)
+
+    weight = units.force
+    density = units.mass/units.volume
+    area = units.length**2
+    sec = units.second
+    min = units.minute
+    hr = units.hour
+    lbm = units.pound
+    distance = units.length
+    Hertz = units.hertz
+    for k, v in locals().copy().items():
+        if isinstance(v, (units.Quantity, units.Dimension)):
+            setattr(units, k, v)
+            del locals()[k]
+
+    lengths = distances = {k:getattr(units, k) for k in units.find_unit(units.inch)}
+    areas = {k + '^2': v ** 2 for k, v in lengths.items()}
+    accelerations = {k:getattr(units, k) for k in units.find_unit(units.gee)}
+    pressures = {k:getattr(units, k) for k in units.find_unit(units.pascal)}
+    masses = {k:getattr(units, k) for k in units.find_unit(units.gram)}
+    forces = weights = {k:getattr(units, k) for k in units.find_unit(units.newton)}
+    times = {k:getattr(units, k) for k in units.find_unit(units.minute)}
+    angles = {k: getattr(units, k) for k in units.find_unit(units.radian)}
+    # velocities = {k: getattr(units, k) for k in units.find_unit(units.speed)}
+    # frequencies = {k: getattr(units, k) for k in units.find_unit(units.hertz)}
+    # information = {k: getattr(units, k) for k in units.find_unit(units.byte)}
+    # powers = {k: getattr(units, k) for k in units.find_unit(units.power)}
+    # voltages = {k: getattr(units, k) for k in units.find_unit(units.volts)}
+    # currents = {k: getattr(units, k) for k in units.find_unit(units.ampere)}
+    # charges = {k: getattr(units, k) for k in units.find_unit(units.coulomb)}
+    # lights = {k: getattr(units, k) for k in units.find_unit(units.luminosity)}
+    # resistances = {k: getattr(units, k) for k in units.find_unit(units.ohm)}
+    # amounts = {k: getattr(units, k) for k in units.find_unit(units.mol)}
+    # temperatures = {k: getattr(units, k) for k in units.find_unit(units.kelvin)}
+    # magneticdensities = {k: getattr(units, k) for k in units.find_unit(units.tesla)}
+    # magneticfluxes = {k: getattr(units, k) for k in units.find_unit(units.weber)}
+    # energies = {k: getattr(units, k) for k in units.find_unit(units.electronvolt)}
+    # capacitances = {k: getattr(units, k) for k in units.find_unit(units.farad)}
+    # inductances = {k: getattr(units, k) for k in units.find_unit(units.henry)}
+
+    volumes = {k: getattr(units, k) for k in units.find_unit(units.liter)}
+    volumes.update({k + '^3': v ** 3 for k, v in lengths.items()})
+
+    unit_subs = dict()
+    for name, d in locals().copy().items():
+        if not isinstance(d, dict) or name == 'unit_subs':
+            continue
+        for k, v in d.items():
+            if isinstance(v, (units.Dimension, units.Quantity)):
+                unit_subs[k] = v
+    del d, k, v
+    dimensions = {k: v for k, v in vars(units).items() if isinstance(v, units.Dimension)}
+    units.One = S.One
+
+
+unitSubs = Storage.unit_subs
 _modded_special_types = (exp, sin, cos, sinh, cosh, tan, tanh, asin, acos, asinh, acosh, atan, atanh, atan2)
 dim1 = units.Dimension(1).name
 for t in _modded_special_types:
@@ -88,14 +127,29 @@ class CommonUnits():
     dicts:
         length, mass, area, force, acceleration, volume, pressure
     """
-    length = {k:unitSubs[k] for k in ['mm', 'cm', 'inch', 'ft', 'yard', 'm']}
+    length = distance = {k:unitSubs[k] for k in ['mm', 'cm', 'inch', 'ft', 'yard', 'm']}
     mass = {k:unitSubs[k] for k in ['gram', 'mg', 'lbm', 'kg']}
     area = {k+'^2':unitSubs[k]**2 for k in length.keys()}
-    force = {k:unitSubs[k] for k in ['N', 'mg', 'lbf', 'kg']}
-    acceleration = {'g':units.gee, 'm/s2':units.m/units.second**2, 'ft/s2':units.feet/units.second**2}
-    volume = {k:unitSubs[k] for k in ['ml', 'cl', 'liter', 'quarts', 'USgal']}
+    force = weight = {k:unitSubs[k] for k in ['N', 'kN', 'lbf']}
+    acceleration = {'g':units.gee, 'm/s^2':units.m/units.second**2, 'ft/s^2':units.feet/units.second**2}
+    volume = {k:unitSubs[k] for k in ['ml', 'cl', 'liter', 'USgal']}
     volume.update({k+'^3':unitSubs[k]**3 for k in length.keys()})
-    pressure = {k:unitSubs[k] for k in ['Pa', 'kPa', 'atm', 'psi', 'bar', 'mmHg', 'torr']}
+    pressure = {k:unitSubs[k] for k in ['Pa', 'kPa', 'MPa', 'atm', 'psi', 'bar', 'mmHg', 'pa', 'torr']}
+    density = dict()
+    for m,M in mass.items():
+        for v,V in volume.items():
+            if v in ['yard^3']:
+                continue
+            k = '/'.join([m,v])
+            density[k] = M/V
+    torque = dict()
+    for f,F in force.items():
+        for d,D in distance.items():
+            if d in ['yard']:
+                continue
+            k = '-'.join([f,d])
+            torque[k] = F*D
+    moment = torque
 
 
 def _keywordError(text):
@@ -560,8 +614,11 @@ class SympyDimensionEdit(SympyUnitEdit):
     def __init__(self, parent=None, **kwargs):
         dim = kwargs.pop('dimension', self.defaultArgs['dimension'])
         if isinstance(dim, str):
-            dim = getattr(units, dim)
-            # dim = getattr(units, dim, units.Dimension(dim))
+            if not _notSafeError(dim):
+                new_dim = parse_expr(dim.replace('^', '**'), local_dict=Storage.dimensions)
+                if not isinstance(new_dim, units.Dimension):
+                    raise TypeError(f"Cannot create Dimension from '{dim}'")
+                dim = new_dim
         self._dimension = dim
         SympyUnitEdit.__init__(self, parent, **kwargs)
 
@@ -606,7 +663,11 @@ class SympyDimensionEdit(SympyUnitEdit):
         """
         self.logger.debug(f"setDimension({type(dim), dim})")
         if isinstance(dim, str):
-            dim = getattr(units, dim, units.Dimension(dim))
+            if not _notSafeError(dim):
+                new_dim = parse_expr(dim.replace('^', '**'), local_dict=Storage.dimensions)
+                if not isinstance(new_dim, units.Dimension):
+                    raise TypeError(f"Cannot create Dimension from '{dim}'")
+                dim = new_dim
         self._dimension = dim
         self.setError(self.errorCheck(self))
 
