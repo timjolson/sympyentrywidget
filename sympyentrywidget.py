@@ -427,6 +427,7 @@ class SympyExprEdit(SympySymbolEdit):
     Added signals:
         exprChanged([]],[object],[str])  # emitted when the expression is successfully changed
         valueChanged([]],[object],[str])  # same as exprChanged, but emits sympy's evalf(expr)
+        displayValue(str)  # same as valueChanged, but emits str(evalf(4)) for reasonable display
 
     Added methods:
         getExpr: get the widget's current sympy.Expr (after processing by errorCheck)
@@ -436,6 +437,7 @@ class SympyExprEdit(SympySymbolEdit):
     written by Tim Olson - timjolson@user.noreplay.github.com
     """
     valueChanged = pyqtSignal([], [object], [str])
+    displayValue = pyqtSignal(str)
 
     def __init__(self, parent=None, **kwargs):
         self._expr = None
@@ -461,6 +463,7 @@ class SympyExprEdit(SympySymbolEdit):
             self.logger.log(logging.DEBUG-1, f'errorCheck() -> {repr(e)}')
             self.exprChanged[object].emit(None)
             self.valueChanged[object].emit(None)
+            self.displayValue.emit('----')
             self._expr = None
             return e
 
@@ -468,6 +471,7 @@ class SympyExprEdit(SympySymbolEdit):
             self.logger.log(logging.DEBUG-1, 'errorCheck() -> None')
             self.exprChanged[object].emit(None)
             self.valueChanged[object].emit(None)
+            self.displayValue.emit('----')
             self._expr = None
             return None
         self.logger.log(logging.DEBUG-1, 'errorCheck() -> False')
@@ -477,6 +481,7 @@ class SympyExprEdit(SympySymbolEdit):
             self._expr = expr
         self.exprChanged[object].emit(self._expr)
         self.valueChanged[object].emit(self._expr.simplify().evalf())
+        self.displayValue.emit(str(self._expr.evalf(4)))
         return False
 
     def getValue(self, *args, **kwargs):
@@ -500,6 +505,7 @@ class SympyUnitEdit(SympyExprEdit):
     Added signals:
         exprChanged([]],[object],[str])  # emitted when the expression is successfully changed
         valueChanged([]],[object],[str])  # same as exprChanged, but emits sympy's evalf(expr)
+        displayValue(str)  # same as valueChanged, but emits str(evalf(4)) for reasonable display
 
     Added methods:
         getExpr: get the widget's current sympy.Expr (after processing by errorCheck)
@@ -532,6 +538,7 @@ class SympyUnitEdit(SympyExprEdit):
             self._expr = None
             self.exprChanged[object].emit(None)
             self.valueChanged[object].emit(None)
+            self.displayValue.emit(None)
             return e
 
         if expr is None:
@@ -539,12 +546,14 @@ class SympyUnitEdit(SympyExprEdit):
             self._expr = None
             self.exprChanged[object].emit(None)
             self.valueChanged[object].emit(None)
+            self.displayValue.emit(None)
             return None
         # else:  # no problems
         self.logger.log(logging.DEBUG-1, 'errorCheck() -> False')
         self._expr = quantity_simplify(expr)
         self.exprChanged[object].emit(self._expr)
         self.valueChanged[object].emit(self._expr.simplify().evalf())
+        self.displayValue.emit(str(self._expr.evalf(4)))
         return False
 
     def getDimension(self):
@@ -642,6 +651,7 @@ class SympyDimensionEdit(SympyUnitEdit):
             self._expr = None
             self.exprChanged[object].emit(None)
             self.valueChanged[object].emit(None)
+            self.displayValue.emit(None)
             return e
 
         if expr is None:
@@ -649,12 +659,14 @@ class SympyDimensionEdit(SympyUnitEdit):
             self._expr = None
             self.exprChanged[object].emit(None)
             self.valueChanged[object].emit(None)
+            self.displayValue.emit(None)
             return None
         # else:  # no problems
         self.logger.log(logging.DEBUG-1, 'errorCheck() -> False')
         self._expr = quantity_simplify(expr)
         self.exprChanged[object].emit(self._expr)
         self.valueChanged[object].emit(self._expr.simplify().evalf())
+        self.displayValue.emit(str(self._expr.evalf(4)))
         return False
 
     def setDimension(self, dim):
@@ -685,6 +697,7 @@ class SympyEntryWidget(EntryWidget):
     Added signals:
         exprChanged([]],[object],[str])  # emitted when SympyUnitEdit expression is successfully changed
         valueChanged([]],[object],[str])  # same as exprChanged, but uses sympy's evalf on expression first
+        displayValue(str)  # same as valueChanged, but emits str(evalf(4)) for reasonable display
 
     Added methods:
         getExpr: get SympyUnitEdit's current sympy.Expr
@@ -702,6 +715,7 @@ class SympyEntryWidget(EntryWidget):
     unitsChanged = EntryWidget.dataChanged
     valueChanged = pyqtSignal([], [object], [str])
     exprChanged = pyqtSignal([], [object], [str])
+    displayValue = pyqtSignal(str)
 
     defaultArgs = EntryWidget.defaultArgs.copy()
     defaultArgs.update(options=CommonUnits.length)
@@ -747,6 +761,7 @@ class SympyEntryWidget(EntryWidget):
         lineEdit.errorCleared.connect(self.errorCleared.emit)
         lineEdit.errorChanged[object].connect(self.errorChanged[object].emit)
         lineEdit.hasError[object].connect(self.hasError[object].emit)
+        lineEdit.displayValue.connect(self.displayValue.emit)
 
         self.comboBox = combo = DictComboBox(parent=self, options=options)
         combo.setDisabled(optionFixed)
@@ -783,12 +798,14 @@ class SympyEntryWidget(EntryWidget):
             self.logger.log(logging.DEBUG - 1, f'errorCheck() -> {repr(err)}')
             self.exprChanged[object].emit(None)
             self.valueChanged[object].emit(None)
+            self.displayValue.emit(None)
             return err
 
         def emit_none(reason):
             self.logger.log(logging.DEBUG - 1, f'errorCheck() -> {repr(reason)}')
             self.exprChanged[object].emit(None)
             self.valueChanged[object].emit(None)
+            self.displayValue.emit(None)
             return None
 
         text = self.lineEdit.text()
@@ -832,6 +849,7 @@ class SympyEntryWidget(EntryWidget):
         self._value = expr.evalf()
         self.exprChanged[object].emit(expr)
         self.valueChanged[object].emit(self._value)
+        self.displayValue.emit(str(expr.evalf(4)))
         # finish errorCheck, all good
         return False
 

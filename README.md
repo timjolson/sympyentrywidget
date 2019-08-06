@@ -23,6 +23,7 @@ This package is an extension adding a sympy backend to support symbolic/mathemat
     Added signals:
         exprChanged([]],[object],[str])  # emitted when SympyUnitEdit expression is successfully changed
         valueChanged([]],[object],[str])  # same as exprChanged, but uses sympy's evalf on expression first
+        displayValue(str)  # same as valueChanged, but emits str(evalf(4)) for reasonable display
 
     Added methods:
         getExpr: get SympyUnitEdit's current sympy.Expr
@@ -47,6 +48,7 @@ This package is an extension adding a sympy backend to support symbolic/mathemat
     Added signals:
         exprChanged([]],[object],[str])  # emitted when the expression is successfully changed
         valueChanged([]],[object],[str])  # same as exprChanged, but emits sympy's evalf(expr)
+        displayValue(str)  # same as valueChanged, but emits str(evalf(4)) for reasonable display
 
     Added methods:
         getExpr: get the widget's current sympy.Expr (after processing by errorCheck)
@@ -59,6 +61,7 @@ This package is an extension adding a sympy backend to support symbolic/mathemat
     Added signals:
         exprChanged([]],[object],[str])  # emitted when the expression is successfully changed
         valueChanged([]],[object],[str])  # same as exprChanged, but emits sympy's evalf(expr)
+        displayValue(str)  # same as valueChanged, but emits str(evalf(4)) for reasonable display
 
     Added methods:
         getExpr: get the widget's current sympy.Expr (after processing by errorCheck)
