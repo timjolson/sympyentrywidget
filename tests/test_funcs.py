@@ -1,9 +1,9 @@
 import pytest
 from . import units_convert_check, expr_safe_check, units_work_check
 from sympyentrywidget import \
-    (expr_is_safe, parseExprUnits,
+    (expr_is_safe, parseUnits,
      parseExpr, unitsAreConsistent, UnitMisMatchError,
-     convertTo, unitSubs, check_dimensions, _exprToSymbol,
+     convertTo, unitSubs, check_dimensions, textToSymbol,
      getDimension, _keywordError, _invalidIdentifierError,
      _notSafeError, Symbol, units, ExpressionError)
 import logging
@@ -47,15 +47,15 @@ def test_unit_consistency():
 
         if compat is False:
             with pytest.raises(UnitMisMatchError):
-                unitsAreConsistent(parseExprUnits(ex))
+                unitsAreConsistent(parseUnits(ex))
         else:
-            ex = parseExprUnits(ex)
+            ex = parseUnits(ex)
             unitsAreConsistent(ex)
             check_dimensions(ex)
 
     for ex, _, _, _ in units_convert_check:
         testLogger.debug(ex)
-        ex = parseExprUnits(ex)
+        ex = parseUnits(ex)
         assert unitsAreConsistent(ex)
         check_dimensions(ex)
 
@@ -66,14 +66,14 @@ def test_unit_converts():
     for ex, target_units, compat, output in units_convert_check:
         testLogger.debug(f"ex = {ex}, target = {target_units}, compat = {compat}")
 
-        ex = parseExprUnits(ex)
+        ex = parseUnits(ex)
         if compat is False:
             with pytest.raises(UnitMisMatchError):
                 unitsAreConsistent(ex, target_units)
         else:
             unitsAreConsistent(ex, target_units)
             conv = convertTo(ex, target_units)
-            out = parseExprUnits(output)
+            out = parseUnits(output)
             assert 0 == (conv-out).simplify().evalf().round(18).evalf()
 
 
@@ -83,9 +83,9 @@ def test_exprToSymbol(qtbot):
 
         if not safe:
             with pytest.raises(ExpressionError):
-                _exprToSymbol(ex)
+                textToSymbol(ex)
             continue
         if ident:
-            assert isinstance(_exprToSymbol(ex), Symbol)
+            assert isinstance(textToSymbol(ex), Symbol)
 
 

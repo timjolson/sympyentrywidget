@@ -1,5 +1,5 @@
 import pytest
-from sympyentrywidget import SympyDimensionEdit, units
+from sympyentrywidget import DimensionEdit, units
 from PyQt5 import QtCore
 from qt_utils.helpers_for_tests import *
 import logging
@@ -14,28 +14,28 @@ testLogger = logging.getLogger('testLogger')
 
 
 def test_constructor(qtbot):
-    widget = SympyDimensionEdit()
+    widget = DimensionEdit()
     show(locals())
     assert widget.getDimension() == units.length
     assert widget.dimension == 'length'
 
 
 def test_constructor_text(qtbot):
-    widget = SympyDimensionEdit(text='text', dimension='force')
+    widget = DimensionEdit(text='text', dimension='force')
     show(locals())
     assert widget.dimension == 'force'
     assert widget.getDimension() == units.force
 
 
 def test_constructor_units(qtbot):
-    widget = SympyDimensionEdit(text='2*mm')
+    widget = DimensionEdit(text='2*mm')
     show(locals())
     assert widget.getDimension() == units.length
     assert widget.dimension == 'length'
 
 
 def test_set_dimension(qtbot):
-    widget = SympyDimensionEdit(text='2*mm')
+    widget = DimensionEdit(text='2*mm')
     show(locals())
     assert widget.getDimension() == units.length
     assert widget.dimension == 'length'

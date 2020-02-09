@@ -1,4 +1,4 @@
-from sympyentrywidget import SympyEntryWidget, SympyExprEdit, SympyUnitEdit, SympyDimensionEdit, SympySymbolEdit
+from sympyentrywidget import SympyEntryWidget, ExprEdit, UnitEdit, DimensionEdit, SymbolEdit
 from PyQt5.QtWidgets import QWidget, QVBoxLayout
 import logging
 import sys
@@ -18,30 +18,30 @@ def printer(title):
     return lambda *t: print(title, *t)
 
 
-sym = SympySymbolEdit(text='symbol_name')
-sym.hasError[object].connect(printer('SympySymbolEdit.hasError[object]'))
-sym.exprChanged[object].connect(printer('SympySymbolEdit.exprChanged[object] -> Symbol is:'))
+sym = SymbolEdit(text='symbol_name')
+sym.hasError[object].connect(printer('SymbolEdit.hasError[object]'))
+sym.exprChanged[object].connect(printer('SymbolEdit.exprChanged[object] -> Symbol is:'))
 layout.addWidget(sym)
 
-expr = SympyExprEdit(text='1*a + 2*b - 1*a + cos(pi)')
-expr.hasError[str].connect(printer('SympyExprEdit.hasError[str]'))
-expr.exprChanged[str].connect(printer('SympyExprEdit.exprChanged[str] -> Expression is:'))
+expr = ExprEdit(text='1*a + 2*b - 1*a + cos(pi)')
+expr.hasError[str].connect(printer('ExprEdit.hasError[str]'))
+expr.exprChanged[str].connect(printer('ExprEdit.exprChanged[str] -> Expression is:'))
 expr.editingFinished.connect(lambda: show_symbols(expr))
-expr.editingFinished.connect(lambda: print('SympyExprEdit.editingFinished -> getValue():', expr.getValue()))
+expr.editingFinished.connect(lambda: print('ExprEdit.editingFinished -> getValue():', expr.getValue()))
 layout.addWidget(expr)
 
-unit = SympyUnitEdit(text='2*mm + 1*inch')
-unit.hasError[str].connect(printer('SympyUnitEdit.hasError[str]'))
-unit.exprChanged[object].connect(printer('SympyUnitEdit.exprChanged[object]'))
-unit.exprChanged.connect(lambda: print('SympyUnitEdit.exprChanged -> getExpr()', unit.getExpr()))
-unit.exprChanged.connect(lambda: print('SympyUnitEdit.exprChanged -> getValue()', unit.getValue()))
-unit.valueChanged[object].connect(printer('SympyUnitEdit.valueChanged[object]'))
+unit = UnitEdit(text='2*mm + 1*inch')
+unit.hasError[str].connect(printer('UnitEdit.hasError[str]'))
+unit.exprChanged[object].connect(printer('UnitEdit.exprChanged[object]'))
+unit.exprChanged.connect(lambda: print('UnitEdit.exprChanged -> getExpr()', unit.getExpr()))
+unit.exprChanged.connect(lambda: print('UnitEdit.exprChanged -> getValue()', unit.getValue()))
+unit.valueChanged[object].connect(printer('UnitEdit.valueChanged[object]'))
 layout.addWidget(unit)
 
-dim = SympyDimensionEdit(text='2*mm + 1*inch', dimension='length')
-dim.hasError[str].connect(printer('SympyDimensionEdit.hasError[str]'))
-dim.exprChanged[object].connect(printer('SympyDimensionEdit.exprChanged[object]'))
-dim.valueChanged[object].connect(printer('SympyDimensionEdit.valueChanged[object]'))
+dim = DimensionEdit(text='2*mm + 1*inch', dimension='length')
+dim.hasError[str].connect(printer('DimensionEdit.hasError[str]'))
+dim.exprChanged[object].connect(printer('DimensionEdit.exprChanged[object]'))
+dim.valueChanged[object].connect(printer('DimensionEdit.valueChanged[object]'))
 layout.addWidget(dim)
 
 entry = SympyEntryWidget(text='3*mm + 1*inch', windowTitle='EntryWidget', objectName='EntryWidget',

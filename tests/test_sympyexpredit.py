@@ -1,5 +1,5 @@
 import pytest
-from sympyentrywidget import SympyExprEdit, parseExpr
+from sympyentrywidget import ExprEdit, parseExpr
 from . import expr_safe_check
 from qt_utils.helpers_for_tests import *
 from qt_utils import getCurrentColor
@@ -16,7 +16,7 @@ testLogger = logging.getLogger('testLogger')
 
 
 def test_constructor(qtbot):
-    widget = SympyExprEdit()
+    widget = ExprEdit()
     show(locals())
     assert widget.getError() is None
     assert getCurrentColor(widget, 'Background').names[0] == widget.defaultColors['blank'][0]
@@ -24,7 +24,7 @@ def test_constructor(qtbot):
 
 
 def test_constructor_text(qtbot):
-    widget = SympyExprEdit(text='text')
+    widget = ExprEdit(text='text')
     show(locals())
     assert bool(widget.getError()) is False
     assert getCurrentColor(widget, 'Background').names[0] == widget.defaultColors['default'][0]
@@ -34,7 +34,7 @@ def test_constructor_text(qtbot):
 def test_expr_error(qtbot):
     for e in expr_safe_check:
         testLogger.debug(f"e = {e}")
-        widget = SympyExprEdit(text=e[0])
+        widget = ExprEdit(text=e[0])
         show(locals())
         assert bool(widget.getError()) is e[2]
         if e[0] == '':
@@ -44,7 +44,7 @@ def test_expr_error(qtbot):
             assert getCurrentColor(widget, 'Background').names[0] == \
                    widget.defaultColors['error' if e[2] else 'default'][0]
 
-    widget = SympyExprEdit()
+    widget = ExprEdit()
     show(locals())
     for e in expr_safe_check:
         widget.setText(e[0])
@@ -58,7 +58,7 @@ def test_expr_error(qtbot):
 
 
 def test_constructor_math(qtbot):
-    widget = SympyExprEdit(text='2*a_1 + b')
+    widget = ExprEdit(text='2*a_1 + b')
     show(locals())
     syms = widget.getSymbols()
     assert set(syms.keys()) == {'a_1', 'b'}
@@ -66,7 +66,7 @@ def test_constructor_math(qtbot):
 
 
 def test_constructor_symbols(qtbot):
-    widget = SympyExprEdit(text='word')
+    widget = ExprEdit(text='word')
     show(locals())
     syms = widget.getSymbols()
     assert set(syms.keys()) == {'word'}
@@ -88,13 +88,13 @@ def test_constructor_symbols(qtbot):
 
 
 def test_basic_math(qtbot):
-    widget = SympyExprEdit(text='2*cos(pi) + 20/5')
+    widget = ExprEdit(text='2*cos(pi) + 20/5')
     show(locals())
     assert widget.getSymbols() == dict()
     assert widget.getExpr() == 2
     assert widget.getValue() == 2
 
-    widget = SympyExprEdit(text='2*cos(pi) + pi')
+    widget = ExprEdit(text='2*cos(pi) + pi')
     show(locals())
     assert widget.getSymbols() == dict()
     assert widget.getExpr() == parseExpr('-2 + pi')

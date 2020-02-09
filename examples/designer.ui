@@ -6,47 +6,24 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>693</width>
+    <width>834</width>
     <height>190</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout" columnstretch="0,1,0,0,0,0,0,0,0,2">
+  <layout class="QGridLayout" name="gridLayout" columnstretch="0,1,0,0,0,0,0,0,0,0">
    <item row="2" column="1">
-    <widget class="SympyExprEdit" name="sympyExprEdit">
+    <widget class="ExprEdit" name="ExprEdit">
      <property name="minimumSize">
       <size>
        <width>120</width>
        <height>0</height>
       </size>
      </property>
-     <property name="maximumSize">
-      <size>
-       <width>120</width>
-       <height>16777215</height>
-      </size>
-     </property>
      <property name="text">
       <string>sin(pi/4)</string>
-     </property>
-    </widget>
-   </item>
-   <item row="5" column="9">
-    <widget class="QLabel" name="label_17">
-     <property name="text">
-      <string>TextLabel</string>
-     </property>
-    </widget>
-   </item>
-   <item row="2" column="9">
-    <widget class="QLabel" name="label_12">
-     <property name="text">
-      <string>TextLabel</string>
-     </property>
-     <property name="wordWrap">
-      <bool>true</bool>
      </property>
     </widget>
    </item>
@@ -57,37 +34,12 @@
      </property>
     </widget>
    </item>
-   <item row="6" column="1">
-    <widget class="SympyEntryWidget" name="sympyEntryWidget">
-     <property name="minimumSize">
-      <size>
-       <width>120</width>
-       <height>0</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>120</width>
-       <height>16777215</height>
-      </size>
-     </property>
-     <property name="text_" stdset="0">
-      <string>2*inch</string>
-     </property>
-    </widget>
-   </item>
    <item row="4" column="1">
-    <widget class="SympySymbolEdit" name="sympySymbolEdit">
+    <widget class="SymbolEdit" name="SymbolEdit">
      <property name="minimumSize">
       <size>
        <width>120</width>
        <height>0</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>120</width>
-       <height>16777215</height>
       </size>
      </property>
      <property name="text">
@@ -95,198 +47,23 @@
      </property>
     </widget>
    </item>
-   <item row="2" column="5">
-    <widget class="QLabel" name="label">
-     <property name="maximumSize">
-      <size>
-       <width>120</width>
-       <height>16777215</height>
-      </size>
-     </property>
+   <item row="6" column="9">
+    <widget class="QLabel" name="label_15">
      <property name="text">
       <string>TextLabel</string>
      </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
     </widget>
    </item>
-   <item row="4" column="5">
-    <widget class="QLabel" name="label_3">
-     <property name="maximumSize">
-      <size>
-       <width>120</width>
-       <height>16777215</height>
-      </size>
-     </property>
+   <item row="3" column="9">
+    <widget class="QLabel" name="label_13">
      <property name="text">
       <string>TextLabel</string>
      </property>
-    </widget>
-   </item>
-   <item row="6" column="5">
-    <widget class="QLabel" name="label_4">
-     <property name="maximumSize">
-      <size>
-       <width>120</width>
-       <height>16777215</height>
-      </size>
-     </property>
-     <property name="text">
-      <string>TextLabel</string>
-     </property>
-    </widget>
-   </item>
-   <item row="3" column="5">
-    <widget class="QLabel" name="label_2">
-     <property name="maximumSize">
-      <size>
-       <width>120</width>
-       <height>16777215</height>
-      </size>
-     </property>
-     <property name="text">
-      <string>TextLabel</string>
-     </property>
-    </widget>
-   </item>
-   <item row="3" column="1">
-    <widget class="SympyUnitEdit" name="sympyUnitEdit">
-     <property name="minimumSize">
-      <size>
-       <width>120</width>
-       <height>0</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>120</width>
-       <height>16777215</height>
-      </size>
-     </property>
-     <property name="text">
-      <string>2*mm+1*inch</string>
-     </property>
-    </widget>
-   </item>
-   <item row="2" column="0">
-    <widget class="QLabel" name="label_5">
-     <property name="minimumSize">
-      <size>
-       <width>150</width>
-       <height>0</height>
-      </size>
-     </property>
-     <property name="text">
-      <string>SympyExprEdit</string>
-     </property>
-    </widget>
-   </item>
-   <item row="4" column="0">
-    <widget class="QLabel" name="label_7">
-     <property name="minimumSize">
-      <size>
-       <width>150</width>
-       <height>0</height>
-      </size>
-     </property>
-     <property name="text">
-      <string>SympySymbolEdit</string>
-     </property>
-    </widget>
-   </item>
-   <item row="0" column="5">
-    <widget class="QLabel" name="label_9">
-     <property name="text">
-      <string>Expr</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignCenter</set>
-     </property>
-    </widget>
-   </item>
-   <item row="0" column="7">
-    <widget class="QLabel" name="label_10">
-     <property name="text">
-      <string>Value</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignCenter</set>
-     </property>
-    </widget>
-   </item>
-   <item row="3" column="0">
-    <widget class="QLabel" name="label_6">
-     <property name="minimumSize">
-      <size>
-       <width>150</width>
-       <height>0</height>
-      </size>
-     </property>
-     <property name="text">
-      <string>SympyUnitEdit</string>
-     </property>
-    </widget>
-   </item>
-   <item row="6" column="0">
-    <widget class="QLabel" name="label_8">
-     <property name="minimumSize">
-      <size>
-       <width>150</width>
-       <height>0</height>
-      </size>
-     </property>
-     <property name="text">
-      <string>SympyEntryWidget</string>
-     </property>
-    </widget>
-   </item>
-   <item row="0" column="6" rowspan="7">
-    <widget class="Line" name="line_3">
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
-    </widget>
-   </item>
-   <item row="5" column="0">
-    <widget class="QLabel" name="label_16">
-     <property name="minimumSize">
-      <size>
-       <width>150</width>
-       <height>0</height>
-      </size>
-     </property>
-     <property name="text">
-      <string>SympyDimensionEdit</string>
-     </property>
-    </widget>
-   </item>
-   <item row="5" column="1">
-    <widget class="SympyDimensionEdit" name="sympydimensionedit">
-     <property name="minimumSize">
-      <size>
-       <width>120</width>
-       <height>0</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>120</width>
-       <height>16777215</height>
-      </size>
-     </property>
-     <property name="text">
-      <string>1*mm</string>
-     </property>
-    </widget>
-   </item>
-   <item row="5" column="5">
-    <widget class="QLabel" name="label_18">
-     <property name="maximumSize">
-      <size>
-       <width>120</width>
-       <height>16777215</height>
-      </size>
-     </property>
-     <property name="text">
-      <string>TextLabel</string>
+     <property name="wordWrap">
+      <bool>true</bool>
      </property>
     </widget>
    </item>
@@ -309,8 +86,35 @@
      </property>
     </widget>
    </item>
-   <item row="3" column="7">
-    <widget class="QLabel" name="label_19">
+   <item row="2" column="9">
+    <widget class="QLabel" name="label_12">
+     <property name="text">
+      <string>TextLabel</string>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="7">
+    <widget class="QLabel" name="label_10">
+     <property name="text">
+      <string>valueChanged</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="0">
+    <widget class="QLabel" name="label_7">
+     <property name="text">
+      <string>SymbolEdit</string>
+     </property>
+    </widget>
+   </item>
+   <item row="5" column="7">
+    <widget class="QLabel" name="label_22">
      <property name="minimumSize">
       <size>
        <width>120</width>
@@ -347,8 +151,143 @@
      </property>
     </widget>
    </item>
-   <item row="5" column="7">
-    <widget class="QLabel" name="label_22">
+   <item row="6" column="0">
+    <widget class="QLabel" name="label_8">
+     <property name="minimumSize">
+      <size>
+       <width>140</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="text">
+      <string>SympyEntryWidget</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="5">
+    <widget class="QLabel" name="label_9">
+     <property name="text">
+      <string>exprChanged</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="5">
+    <widget class="QLabel" name="label_3">
+     <property name="maximumSize">
+      <size>
+       <width>120</width>
+       <height>16777215</height>
+      </size>
+     </property>
+     <property name="text">
+      <string>TextLabel</string>
+     </property>
+    </widget>
+   </item>
+   <item row="5" column="5">
+    <widget class="QLabel" name="label_18">
+     <property name="maximumSize">
+      <size>
+       <width>120</width>
+       <height>16777215</height>
+      </size>
+     </property>
+     <property name="text">
+      <string>TextLabel</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="1">
+    <widget class="UnitEdit" name="UnitEdit">
+     <property name="minimumSize">
+      <size>
+       <width>120</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="text">
+      <string>2*mm+1*inch</string>
+     </property>
+    </widget>
+   </item>
+   <item row="5" column="0">
+    <widget class="QLabel" name="label_16">
+     <property name="text">
+      <string>DimensionEdit</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="8" rowspan="7">
+    <widget class="Line" name="line_2">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="5">
+    <widget class="QLabel" name="label_2">
+     <property name="maximumSize">
+      <size>
+       <width>120</width>
+       <height>16777215</height>
+      </size>
+     </property>
+     <property name="text">
+      <string>TextLabel</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="9">
+    <widget class="QLabel" name="label_11">
+     <property name="text">
+      <string>errorChanged</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item row="5" column="9">
+    <widget class="QLabel" name="label_17">
+     <property name="text">
+      <string>TextLabel</string>
+     </property>
+    </widget>
+   </item>
+   <item row="6" column="5">
+    <widget class="QLabel" name="label_4">
+     <property name="maximumSize">
+      <size>
+       <width>120</width>
+       <height>16777215</height>
+      </size>
+     </property>
+     <property name="text">
+      <string>TextLabel</string>
+     </property>
+    </widget>
+   </item>
+   <item row="6" column="1">
+    <widget class="SympyEntryWidget" name="sympyEntryWidget">
+     <property name="minimumSize">
+      <size>
+       <width>120</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="text_" stdset="0">
+      <string>pi*inch</string>
+     </property>
+     <property name="label" stdset="0">
+      <string>Dim1</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="7">
+    <widget class="QLabel" name="label_19">
      <property name="minimumSize">
       <size>
        <width>120</width>
@@ -363,6 +302,23 @@
      </property>
      <property name="text">
       <string>TextLabel</string>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="9">
+    <widget class="QLabel" name="label_14">
+     <property name="text">
+      <string>TextLabel</string>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="0">
+    <widget class="QLabel" name="label_6">
+     <property name="text">
+      <string>UnitEdit</string>
      </property>
     </widget>
    </item>
@@ -385,50 +341,85 @@
      </property>
     </widget>
    </item>
-   <item row="0" column="9">
-    <widget class="QLabel" name="label_11">
-     <property name="text">
-      <string>Error</string>
+   <item row="2" column="5">
+    <widget class="QLabel" name="label">
+     <property name="maximumSize">
+      <size>
+       <width>120</width>
+       <height>16777215</height>
+      </size>
      </property>
-     <property name="alignment">
-      <set>Qt::AlignCenter</set>
-     </property>
-    </widget>
-   </item>
-   <item row="3" column="9">
-    <widget class="QLabel" name="label_13">
      <property name="text">
       <string>TextLabel</string>
      </property>
-     <property name="wordWrap">
-      <bool>true</bool>
-     </property>
     </widget>
    </item>
-   <item row="4" column="9">
-    <widget class="QLabel" name="label_14">
+   <item row="5" column="1">
+    <widget class="DimensionEdit" name="dimensionedit">
+     <property name="minimumSize">
+      <size>
+       <width>120</width>
+       <height>0</height>
+      </size>
+     </property>
      <property name="text">
-      <string>TextLabel</string>
-     </property>
-     <property name="wordWrap">
-      <bool>true</bool>
+      <string>pi*mm</string>
      </property>
     </widget>
    </item>
-   <item row="6" column="9">
-    <widget class="QLabel" name="label_15">
-     <property name="text">
-      <string>TextLabel</string>
-     </property>
-     <property name="wordWrap">
-      <bool>true</bool>
-     </property>
-    </widget>
-   </item>
-   <item row="0" column="8" rowspan="7">
-    <widget class="Line" name="line_2">
+   <item row="0" column="6" rowspan="7">
+    <widget class="Line" name="line_3">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="0">
+    <widget class="QLabel" name="label_5">
+     <property name="text">
+      <string>ExprEdit</string>
+     </property>
+    </widget>
+   </item>
+   <item row="5" column="2">
+    <widget class="QLabel" name="label_24">
+     <property name="text">
+      <string>TextLabel</string>
+     </property>
+    </widget>
+   </item>
+   <item row="6" column="2">
+    <widget class="QLabel" name="label_25">
+     <property name="text">
+      <string>TextLabel</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="2">
+    <widget class="QLabel" name="label_26">
+     <property name="text">
+      <string>displayValue</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="2">
+    <widget class="QLabel" name="label_28">
+     <property name="text">
+      <string>TextLabel</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="2">
+    <widget class="QLabel" name="label_29">
+     <property name="text">
+      <string>TextLabel</string>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="2">
+    <widget class="QLabel" name="label_27">
+     <property name="text">
+      <string>N/A</string>
      </property>
     </widget>
    </item>
@@ -448,25 +439,25 @@
    <container>1</container>
   </customwidget>
   <customwidget>
-   <class>SympyExprEdit</class>
-   <extends>SympySymbolEdit</extends>
+   <class>ExprEdit</class>
+   <extends>SymbolEdit</extends>
    <header>sympyentrywidget</header>
    <container>1</container>
   </customwidget>
   <customwidget>
-   <class>SympyUnitEdit</class>
-   <extends>SympyExprEdit</extends>
+   <class>UnitEdit</class>
+   <extends>ExprEdit</extends>
    <header>sympyentrywidget</header>
    <container>1</container>
   </customwidget>
   <customwidget>
-   <class>SympyDimensionEdit</class>
-   <extends>SympyUnitEdit</extends>
+   <class>DimensionEdit</class>
+   <extends>UnitEdit</extends>
    <header>sympyentrywidget</header>
    <container>1</container>
   </customwidget>
   <customwidget>
-   <class>SympySymbolEdit</class>
+   <class>SymbolEdit</class>
    <extends>AutoColorLineEdit</extends>
    <header>sympyentrywidget</header>
    <container>1</container>
@@ -479,109 +470,13 @@
   </customwidget>
  </customwidgets>
  <tabstops>
-  <tabstop>sympyExprEdit</tabstop>
-  <tabstop>sympyUnitEdit</tabstop>
-  <tabstop>sympySymbolEdit</tabstop>
-  <tabstop>sympydimensionedit</tabstop>
+  <tabstop>ExprEdit</tabstop>
+  <tabstop>UnitEdit</tabstop>
+  <tabstop>SymbolEdit</tabstop>
+  <tabstop>dimensionedit</tabstop>
  </tabstops>
  <resources/>
  <connections>
-  <connection>
-   <sender>sympyExprEdit</sender>
-   <signal>exprChanged(QString)</signal>
-   <receiver>label</receiver>
-   <slot>setText(QString)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>278</x>
-     <y>56</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>548</x>
-     <y>56</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>sympyUnitEdit</sender>
-   <signal>exprChanged(QString)</signal>
-   <receiver>label_2</receiver>
-   <slot>setText(QString)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>278</x>
-     <y>87</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>548</x>
-     <y>87</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>sympySymbolEdit</sender>
-   <signal>exprChanged(QString)</signal>
-   <receiver>label_3</receiver>
-   <slot>setText(QString)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>278</x>
-     <y>118</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>548</x>
-     <y>118</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>sympyExprEdit</sender>
-   <signal>errorChanged(QString)</signal>
-   <receiver>label_12</receiver>
-   <slot>setText(QString)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>278</x>
-     <y>56</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>413</x>
-     <y>56</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>sympyUnitEdit</sender>
-   <signal>errorChanged(QString)</signal>
-   <receiver>label_13</receiver>
-   <slot>setText(QString)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>278</x>
-     <y>87</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>413</x>
-     <y>87</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>sympySymbolEdit</sender>
-   <signal>errorChanged(QString)</signal>
-   <receiver>label_14</receiver>
-   <slot>setText(QString)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>278</x>
-     <y>118</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>413</x>
-     <y>118</y>
-    </hint>
-   </hints>
-  </connection>
   <connection>
    <sender>sympyEntryWidget</sender>
    <signal>exprChanged(QString)</signal>
@@ -593,7 +488,7 @@
      <y>158</y>
     </hint>
     <hint type="destinationlabel">
-     <x>548</x>
+     <x>579</x>
      <y>180</y>
     </hint>
    </hints>
@@ -609,88 +504,8 @@
      <y>180</y>
     </hint>
     <hint type="destinationlabel">
-     <x>413</x>
+     <x>824</x>
      <y>180</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>sympydimensionedit</sender>
-   <signal>errorChanged(QString)</signal>
-   <receiver>label_17</receiver>
-   <slot>setText(QString)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>278</x>
-     <y>149</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>413</x>
-     <y>149</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>sympydimensionedit</sender>
-   <signal>exprChanged(QString)</signal>
-   <receiver>label_18</receiver>
-   <slot>setText(QString)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>278</x>
-     <y>149</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>548</x>
-     <y>149</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>sympyExprEdit</sender>
-   <signal>valueChanged(QString)</signal>
-   <receiver>label_20</receiver>
-   <slot>setText(QString)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>278</x>
-     <y>56</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>607</x>
-     <y>44</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>sympyUnitEdit</sender>
-   <signal>valueChanged(QString)</signal>
-   <receiver>label_19</receiver>
-   <slot>setText(QString)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>278</x>
-     <y>87</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>643</x>
-     <y>81</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>sympydimensionedit</sender>
-   <signal>valueChanged(QString)</signal>
-   <receiver>label_22</receiver>
-   <slot>setText(QString)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>278</x>
-     <y>149</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>646</x>
-     <y>137</y>
     </hint>
    </hints>
   </connection>
@@ -705,8 +520,248 @@
      <y>167</y>
     </hint>
     <hint type="destinationlabel">
-     <x>607</x>
-     <y>170</y>
+     <x>714</x>
+     <y>180</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>sympyEntryWidget</sender>
+   <signal>displayValue(QString)</signal>
+   <receiver>label_25</receiver>
+   <slot>setText(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>241</x>
+     <y>176</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>473</x>
+     <y>180</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>dimensionedit</sender>
+   <signal>displayValue(QString)</signal>
+   <receiver>label_24</receiver>
+   <slot>setText(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>302</x>
+     <y>143</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>406</x>
+     <y>138</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>dimensionedit</sender>
+   <signal>exprChanged(QString)</signal>
+   <receiver>label_18</receiver>
+   <slot>setText(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>202</x>
+     <y>135</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>559</x>
+     <y>133</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>dimensionedit</sender>
+   <signal>valueChanged(QString)</signal>
+   <receiver>label_22</receiver>
+   <slot>setText(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>209</x>
+     <y>140</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>664</x>
+     <y>140</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>dimensionedit</sender>
+   <signal>errorChanged(QString)</signal>
+   <receiver>label_17</receiver>
+   <slot>setText(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>189</x>
+     <y>135</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>795</x>
+     <y>125</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>SymbolEdit</sender>
+   <signal>exprChanged(QString)</signal>
+   <receiver>label_3</receiver>
+   <slot>setText(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>257</x>
+     <y>107</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>542</x>
+     <y>106</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>SymbolEdit</sender>
+   <signal>exprChanged(QString)</signal>
+   <receiver>label_14</receiver>
+   <slot>setText(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>184</x>
+     <y>105</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>791</x>
+     <y>100</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>UnitEdit</sender>
+   <signal>displayValue(QString)</signal>
+   <receiver>label_28</receiver>
+   <slot>setText(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>325</x>
+     <y>79</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>405</x>
+     <y>73</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>UnitEdit</sender>
+   <signal>exprChanged(QString)</signal>
+   <receiver>label_2</receiver>
+   <slot>setText(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>225</x>
+     <y>70</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>578</x>
+     <y>76</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>UnitEdit</sender>
+   <signal>valueChanged(QString)</signal>
+   <receiver>label_19</receiver>
+   <slot>setText(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>191</x>
+     <y>78</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>622</x>
+     <y>72</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>UnitEdit</sender>
+   <signal>errorChanged(QString)</signal>
+   <receiver>label_13</receiver>
+   <slot>setText(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>205</x>
+     <y>73</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>817</x>
+     <y>70</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>ExprEdit</sender>
+   <signal>displayValue(QString)</signal>
+   <receiver>label_29</receiver>
+   <slot>setText(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>343</x>
+     <y>48</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>436</x>
+     <y>46</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>ExprEdit</sender>
+   <signal>exprChanged(QString)</signal>
+   <receiver>label</receiver>
+   <slot>setText(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>200</x>
+     <y>39</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>541</x>
+     <y>35</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>ExprEdit</sender>
+   <signal>valueChanged(QString)</signal>
+   <receiver>label_20</receiver>
+   <slot>setText(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>209</x>
+     <y>42</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>688</x>
+     <y>52</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>ExprEdit</sender>
+   <signal>errorChanged(QString)</signal>
+   <receiver>label_12</receiver>
+   <slot>setText(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>196</x>
+     <y>42</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>802</x>
+     <y>34</y>
     </hint>
    </hints>
   </connection>

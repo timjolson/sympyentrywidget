@@ -7,6 +7,7 @@ from sympy.physics import units
 from sympy.physics.units.util import check_dimensions, quantity_simplify
 from sympy.parsing.sympy_parser import parse_expr, TokenError
 from PyQt5.QtCore import pyqtProperty, pyqtSignal
+from PyQt5 import QtWidgets
 from keyword import iskeyword
 import logging
 import re
@@ -15,7 +16,7 @@ logger = logging.getLogger(__name__)
 logger.addHandler(logging.NullHandler())
 
 
-class Storage:
+class _storage:
     USgal = units.Quantity('US gallon', 'USgal')
     USgal.set_scale_factor(231*units.inch**3)
     USgal.set_dimension(units.length**3)
@@ -89,7 +90,7 @@ class Storage:
     units.One = S.One
 
 
-unitSubs = Storage.unit_subs
+unitSubs = _storage.unit_subs
 _modded_special_types = (exp, sin, cos, sinh, cosh, tan, tanh, asin, acos, asinh, acosh, atan, atanh, atan2)
 dim1 = units.Dimension(1).name
 for t in _modded_special_types:
@@ -152,6 +153,20 @@ class CommonUnits():
     moment = torque
 
 
+def withoutTypes(expr, types):
+    """Get `expr` without atoms that are instances of any `types`
+
+    :param expr: sympy.Expr
+    :param types: sympy types; ex. sympy.physics.units.Quantity
+    :return: sympy.Expr
+    """
+    if expr.is_number:
+        return expr
+    terms = [term for term in expr.args if not isinstance(term, types)]
+    expr = expr.func(*terms)
+    return expr
+
+
 def _keywordError(text):
     if iskeyword(text):
         raise ExpressionError("Keyword in use")
@@ -170,7 +185,13 @@ def _invalidIdentifierError(text):
     return False
 
 
-def _exprToSymbol(text):
+def textToSymbol(text):
+    """Get sympy.Symbol version of `text` after
+        checking for safety, keyword, identifier.
+
+    :param text: str
+    :return: sympy.Symbol or raises ExpressionError
+    """
     if text == '':
         raise ExpressionError('Empty string not a valid Sympy Symbol name')
 
@@ -187,7 +208,7 @@ def parseExpr(text):
     Checks if text is relatively safe to evaluate.
 
     :param text: str
-    :return: sympy.Expr or None
+    :return: sympy.Expr, None, or raises ExpressionError
     """
     logger.log(logging.DEBUG - 1, f"parseExpr('{text}')")
     if text == '':
@@ -271,7 +292,7 @@ def convertTo(expr, unit):
     return _ret
 
 
-def parseExprUnits(text, dimension=None):
+def parseUnits(text, dimension=None):
     """Parse a string with units possibly included.
     See parseExpr for pre-processing steps.
 
@@ -281,7 +302,7 @@ def parseExprUnits(text, dimension=None):
     :param text: str
     :return: sympy.Expr or None
     """
-    logger.log(logging.DEBUG - 1, f'parseExprUnits({text})')
+    logger.log(logging.DEBUG - 1, f'parseUnits({text})')
 
     if text == '':
         return None
@@ -317,12 +338,13 @@ def unitsAreConsistent(expr, targetUnits=None):
     If `targetUnits` provided, also checks for compatibility for
     converting to `targetUnits`.
 
-    Raises UnitMisMatchError if `expr` has incompatible or
-        indeterminate units, or if `expr` and `targetUnits` are
-        not compatible.
+    Raises UnitMisMatchError when applicable.
 
-    Note: If `expr` has dimension of `1` (unit-less), returns `True`
-        barring other errors occur.
+    Notes:
+    If `targetUnits` is a units.Dimension, requires `expr` to
+        evaluate to units with same units.Dimension (eg. must include units in `expr`)
+    If `expr` has dimension of `1` (unit-less), returns `True`
+        barring other errors or targetUnits being units.Dimension.
 
     :param expr: sympy.Expr
     :param targetUnits: str\\units.Quantity\\units.Dimension
@@ -352,7 +374,7 @@ def unitsAreConsistent(expr, targetUnits=None):
         try:
             targetUnits = unitSubs[targetUnits]
         except KeyError:
-            targetUnits = parseExprUnits(targetUnits)
+            targetUnits = parseUnits(targetUnits)
 
     target_dim = getDimension(targetUnits)
     logger.log(logging.DEBUG-1, f"target_dim = {target_dim}")
@@ -370,7 +392,7 @@ def unitsAreConsistent(expr, targetUnits=None):
         raise UnitMisMatchError(f"{expr_dim} incompatible with {target_dim}")
 
 
-class SympySymbolEdit(AutoColorLineEdit):
+class SymbolEdit(AutoColorLineEdit):
     """entrywidget.AutoColorLineEdit subclass
     Added signals:
         exprChanged([]],[object],[str])  # emitted when the expression is successfully changed
@@ -400,7 +422,7 @@ class SympySymbolEdit(AutoColorLineEdit):
         """
         self.logger.log(logging.DEBUG-1, f'errorCheck()')
         try:
-            expr = _exprToSymbol(self.text())
+            expr = textToSymbol(self.text())
         except ExpressionError as e:
             self.logger.log(logging.DEBUG-1, f'errorCheck() -> {repr(e)}')
             self._expr = None
@@ -422,7 +444,7 @@ class SympySymbolEdit(AutoColorLineEdit):
         return {str(self._expr):self._expr}
 
 
-class SympyExprEdit(SympySymbolEdit):
+class ExprEdit(SymbolEdit):
     """entrywidget.AutoColorLineEdit subclass
     Added signals:
         exprChanged([]],[object],[str])  # emitted when the expression is successfully changed
@@ -441,7 +463,7 @@ class SympyExprEdit(SympySymbolEdit):
 
     def __init__(self, parent=None, **kwargs):
         self._expr = None
-        SympySymbolEdit.__init__(self, parent, **kwargs)
+        SymbolEdit.__init__(self, parent, **kwargs)
         self.valueChanged[object].connect(lambda o: self.valueChanged[str].emit(str(o)))
         self.valueChanged[object].connect(lambda o: self.valueChanged.emit())
 
@@ -463,7 +485,7 @@ class SympyExprEdit(SympySymbolEdit):
             self.logger.log(logging.DEBUG-1, f'errorCheck() -> {repr(e)}')
             self.exprChanged[object].emit(None)
             self.valueChanged[object].emit(None)
-            self.displayValue.emit('----')
+            self.displayValue.emit('- - -')
             self._expr = None
             return e
 
@@ -471,7 +493,7 @@ class SympyExprEdit(SympySymbolEdit):
             self.logger.log(logging.DEBUG-1, 'errorCheck() -> None')
             self.exprChanged[object].emit(None)
             self.valueChanged[object].emit(None)
-            self.displayValue.emit('----')
+            self.displayValue.emit('- - -')
             self._expr = None
             return None
         self.logger.log(logging.DEBUG-1, 'errorCheck() -> False')
@@ -500,8 +522,8 @@ class SympyExprEdit(SympySymbolEdit):
         return rv
 
 
-class SympyUnitEdit(SympyExprEdit):
-    """SympyExprEdit subclass
+class UnitEdit(ExprEdit):
+    """ExprEdit subclass
     Added signals:
         exprChanged([]],[object],[str])  # emitted when the expression is successfully changed
         valueChanged([]],[object],[str])  # same as exprChanged, but emits sympy's evalf(expr)
@@ -532,13 +554,13 @@ class SympyUnitEdit(SympyExprEdit):
         """
         self.logger.log(logging.DEBUG-1, f'errorCheck()')
         try:
-            expr = parseExprUnits(self.text())
+            expr = parseUnits(self.text())
         except (ExpressionError, UnitMisMatchError) as e:
             self.logger.log(logging.DEBUG-1, f'errorCheck() -> {repr(e)}')
             self._expr = None
             self.exprChanged[object].emit(None)
             self.valueChanged[object].emit(None)
-            self.displayValue.emit(None)
+            self.displayValue.emit('- - -')
             return e
 
         if expr is None:
@@ -546,7 +568,7 @@ class SympyUnitEdit(SympyExprEdit):
             self._expr = None
             self.exprChanged[object].emit(None)
             self.valueChanged[object].emit(None)
-            self.displayValue.emit(None)
+            self.displayValue.emit('- - -')
             return None
         # else:  # no problems
         self.logger.log(logging.DEBUG-1, 'errorCheck() -> False')
@@ -610,26 +632,26 @@ class SympyUnitEdit(SympyExprEdit):
             return None
 
 
-class SympyDimensionEdit(SympyUnitEdit):
-    """SympyUnitEdit subclass, with output having an enforced dimension.
+class DimensionEdit(UnitEdit):
+    """UnitEdit subclass, with output having an enforced dimension.
     Added methods:
         setDimension: set dimension of widget's output
 
     written by Tim Olson - timjolson@user.noreplay.github.com
     """
-    defaultArgs = SympyUnitEdit.defaultArgs.copy()
+    defaultArgs = UnitEdit.defaultArgs.copy()
     defaultArgs.update(dimension=units.Dimension('length'))
 
     def __init__(self, parent=None, **kwargs):
         dim = kwargs.pop('dimension', self.defaultArgs['dimension'])
         if isinstance(dim, str):
             if not _notSafeError(dim):
-                new_dim = parse_expr(dim.replace('^', '**'), local_dict=Storage.dimensions)
+                new_dim = parse_expr(dim.replace('^', '**'), local_dict=_storage.dimensions)
                 if not isinstance(new_dim, units.Dimension):
                     raise TypeError(f"Cannot create Dimension from '{dim}'")
                 dim = new_dim
         self._dimension = dim
-        SympyUnitEdit.__init__(self, parent, **kwargs)
+        UnitEdit.__init__(self, parent, **kwargs)
 
     @staticmethod
     def errorCheck(self):
@@ -645,13 +667,13 @@ class SympyDimensionEdit(SympyUnitEdit):
         """
         self.logger.log(logging.DEBUG-1, f'errorCheck()')
         try:
-            expr = parseExprUnits(self.text(), self._dimension)
+            expr = parseUnits(self.text(), self._dimension)
         except (ExpressionError, UnitMisMatchError) as e:
             self.logger.log(logging.DEBUG-1, f'errorCheck() -> {repr(e)}')
             self._expr = None
             self.exprChanged[object].emit(None)
             self.valueChanged[object].emit(None)
-            self.displayValue.emit(None)
+            self.displayValue.emit('- - -')
             return e
 
         if expr is None:
@@ -659,7 +681,7 @@ class SympyDimensionEdit(SympyUnitEdit):
             self._expr = None
             self.exprChanged[object].emit(None)
             self.valueChanged[object].emit(None)
-            self.displayValue.emit(None)
+            self.displayValue.emit('- - -')
             return None
         # else:  # no problems
         self.logger.log(logging.DEBUG-1, 'errorCheck() -> False')
@@ -676,7 +698,7 @@ class SympyDimensionEdit(SympyUnitEdit):
         self.logger.debug(f"setDimension({type(dim), dim})")
         if isinstance(dim, str):
             if not _notSafeError(dim):
-                new_dim = parse_expr(dim.replace('^', '**'), local_dict=Storage.dimensions)
+                new_dim = parse_expr(dim.replace('^', '**'), local_dict=_storage.dimensions)
                 if not isinstance(new_dim, units.Dimension):
                     raise TypeError(f"Cannot create Dimension from '{dim}'")
                 dim = new_dim
@@ -692,15 +714,15 @@ class SympyDimensionEdit(SympyUnitEdit):
 
 
 class SympyEntryWidget(EntryWidget):
-    """entrywidget.EntryWidget subclass using SympyUnitEdit in place of AutoColorLineEdit.
+    """entrywidget.EntryWidget subclass using UnitEdit in place of AutoColorLineEdit.
 
     Added signals:
-        exprChanged([]],[object],[str])  # emitted when SympyUnitEdit expression is successfully changed
+        exprChanged([]],[object],[str])  # emitted when UnitEdit expression is successfully changed
         valueChanged([]],[object],[str])  # same as exprChanged, but uses sympy's evalf on expression first
         displayValue(str)  # same as valueChanged, but emits str(evalf(4)) for reasonable display
 
     Added methods:
-        getExpr: get SympyUnitEdit's current sympy.Expr
+        getExpr: get UnitEdit's current sympy.Expr
         getValue: uses sympy's evalf on the widget's expression, passing all arguments
         getSymbols: get a dict of the free symbols in widget's expression ; {symbol name:Symbol}
         convertTo: convert widget's expression to different units
@@ -718,22 +740,19 @@ class SympyEntryWidget(EntryWidget):
     displayValue = pyqtSignal(str)
 
     defaultArgs = EntryWidget.defaultArgs.copy()
-    defaultArgs.update(options=CommonUnits.length)
+    defaultArgs.update(options=CommonUnits.length, label='Label')
 
     getSymbols, getExpr, convertTo = delegated.methods('lineEdit', 'getSymbols, getExpr, convertTo')
     getUnits = delegated.methods('comboBox', 'currentData')
 
     def __init__(self, parent=None, **kwargs):
-        options = kwargs.get('options', None)
-        if isinstance(options, str):
-            options = getattr(CommonUnits, options)
-            kwargs.update(options=options)
-
         self._value = None
         EntryWidget.__init__(self, parent, **kwargs)  # runs setupUi
 
     def setupUi(self, kwargs):
         options = kwargs.pop('options', self.defaultArgs['options'])
+        if isinstance(options, str):
+            options = getattr(CommonUnits, options)
         optionFixed = kwargs.pop('optionFixed', self.defaultArgs['optionFixed'])
 
         # connect signals to simpler versions
@@ -756,12 +775,22 @@ class SympyEntryWidget(EntryWidget):
             kwargs['errorCheck'] = lambda lineedit: ec(self)
         else:
             kwargs['errorCheck'] = lambda lineedit: self.errorCheck(self)
-        self.lineEdit = lineEdit = SympyUnitEdit(parent=self, **kwargs)
+        self.lineEdit = lineEdit = DimensionEdit(parent=self, **kwargs)
         lineEdit.exprChanged[object].connect(self.exprChanged[object].emit)
         lineEdit.errorCleared.connect(self.errorCleared.emit)
         lineEdit.errorChanged[object].connect(self.errorChanged[object].emit)
         lineEdit.hasError[object].connect(self.hasError[object].emit)
         lineEdit.displayValue.connect(self.displayValue.emit)
+
+        self._label = label = QtWidgets.QLabel(parent=self, text=kwargs.pop('label', self.defaultArgs['label']))
+        self.output = output = QtWidgets.QLabel(parent=self)
+
+        def formatNum(expr):
+            if expr is None:
+                return '- - -'
+            expr = expr.evalf(4)
+            return str(withoutTypes(expr, (units.Dimension, units.Quantity)))
+        self.valueChanged[object].connect(lambda o: self.output.setText(formatNum(o)))
 
         self.comboBox = combo = DictComboBox(parent=self, options=options)
         combo.setDisabled(optionFixed)
@@ -771,7 +800,9 @@ class SympyEntryWidget(EntryWidget):
         combo.currentTextChanged[str].connect(self.optionChanged[str].emit)
 
         layout = QHBoxLayout(self)
+        layout.addWidget(label)
         layout.addWidget(lineEdit)
+        layout.addWidget(output)
         layout.addWidget(combo)
         layout.setContentsMargins(0,0,0,0)
         self.setLayout(layout)
@@ -798,14 +829,14 @@ class SympyEntryWidget(EntryWidget):
             self.logger.log(logging.DEBUG - 1, f'errorCheck() -> {repr(err)}')
             self.exprChanged[object].emit(None)
             self.valueChanged[object].emit(None)
-            self.displayValue.emit(None)
+            self.displayValue.emit('- - -')
             return err
 
         def emit_none(reason):
             self.logger.log(logging.DEBUG - 1, f'errorCheck() -> {repr(reason)}')
             self.exprChanged[object].emit(None)
             self.valueChanged[object].emit(None)
-            self.displayValue.emit(None)
+            self.displayValue.emit('- - -')
             return None
 
         text = self.lineEdit.text()
@@ -838,8 +869,10 @@ class SympyEntryWidget(EntryWidget):
         except TypeError:
             pass
 
+        u = getDimension(self.getUnits())
+
         try:
-            unitsAreConsistent(expr, self.getUnits())
+            unitsAreConsistent(expr, u)
         except UnitMisMatchError as e:
             return emit_error(e)
 
@@ -882,10 +915,13 @@ class SympyEntryWidget(EntryWidget):
             raise ValueError(f"setUnits('{unit}'): {unit} not in available options {ops}")
     setSelected = setUnits
 
+    getLabel, setLabel = delegated.methods('_label', 'text, setText')
+    label = pyqtProperty(str, lambda s: s._label.text(), lambda s, t: s._label.setText(t))
 
-__all__ = ['SympySymbolEdit', 'SympyExprEdit', 'SympyUnitEdit', 'SympyDimensionEdit',
+
+__all__ = ['SymbolEdit', 'ExprEdit', 'UnitEdit', 'DimensionEdit',
            'SympyEntryWidget', 'units', 'unitSubs', 'UnitMisMatchError',
-           'ExpressionError', 'unitsAreConsistent', 'parseExpr', 'parseExprUnits',
+           'ExpressionError', 'unitsAreConsistent', 'parseExpr', 'parseUnits',
            'convertTo', 'getDimension', 'CommonUnits']
 
 if __name__ == '__main__':

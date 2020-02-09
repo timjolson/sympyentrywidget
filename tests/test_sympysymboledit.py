@@ -1,4 +1,4 @@
-from sympyentrywidget import SympySymbolEdit
+from sympyentrywidget import SymbolEdit
 from . import expr_safe_check
 from qt_utils.helpers_for_tests import show
 from qt_utils import getCurrentColor
@@ -14,7 +14,7 @@ logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 
 
 def test_basic_constructor(qtbot):
-    widget = SympySymbolEdit()
+    widget = SymbolEdit()
     show(locals())
     assert widget.getError()
     assert getCurrentColor(widget, 'Background').names[0] == widget.defaultColors['error'][0]
@@ -24,7 +24,7 @@ def test_basic_constructor(qtbot):
 def test_symbol_name_error(qtbot):
     for e in expr_safe_check:
         logging.debug(e)
-        widget = SympySymbolEdit(text=e[0])
+        widget = SymbolEdit(text=e[0])
         show(locals())
         assert bool(widget.getError()) is not e[3]
         if bool(widget.getError()):
@@ -32,7 +32,7 @@ def test_symbol_name_error(qtbot):
         else:
             assert widget.getExpr() == Symbol(e[0])
 
-    widget = SympySymbolEdit()
+    widget = SymbolEdit()
     for e in expr_safe_check:
         logging.debug(e)
         widget.setText(e[0])

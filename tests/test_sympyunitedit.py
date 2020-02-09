@@ -1,6 +1,6 @@
 import pytest
-from sympyentrywidget import (SympyUnitEdit, unitSubs, units, UnitMisMatchError,
-                              unitsAreConsistent, parseExprUnits)
+from sympyentrywidget import (UnitEdit, unitSubs, units, UnitMisMatchError,
+                              unitsAreConsistent, parseUnits)
 from . import units_work_check
 from qt_utils.helpers_for_tests import *
 from qt_utils import getCurrentColor
@@ -18,7 +18,7 @@ testLogger = logging.getLogger('testLogger')
 
 
 def test_constructor(qtbot):
-    widget = SympyUnitEdit()
+    widget = UnitEdit()
     show(locals())
     assert widget.getError() is None
     assert getCurrentColor(widget, 'Background').names[0] == widget.defaultColors['blank'][0]
@@ -26,7 +26,7 @@ def test_constructor(qtbot):
 
 
 def test_constructor_text(qtbot):
-    widget = SympyUnitEdit(text='text')
+    widget = UnitEdit(text='text')
     show(locals())
     assert bool(widget.getError()) is False
     assert getCurrentColor(widget, 'Background').names[0] == widget.defaultColors['default'][0]
@@ -34,7 +34,7 @@ def test_constructor_text(qtbot):
 
 
 def test_constructor_units(qtbot):
-    widget = SympyUnitEdit(text='2*mm')
+    widget = UnitEdit(text='2*mm')
     show(locals())
     assert widget.getError() is False
     assert getCurrentColor(widget, 'Background').names[0] == widget.defaultColors['default'][0]
@@ -47,7 +47,7 @@ def test_constructor_units(qtbot):
 
 
 def test_unit_consistency(qtbot):
-    widget = SympyUnitEdit()
+    widget = UnitEdit()
     show(locals())
 
     for e in units_work_check:
@@ -64,7 +64,7 @@ def test_unit_consistency(qtbot):
 
 
 def test_conversion_with_symbols(qtbot):
-    widget = SympyUnitEdit(text='1*b*mm')
+    widget = UnitEdit(text='1*b*mm')
     show(locals())
     syms = widget.getSymbols()
     assert set(syms.keys()) == {'b'}
@@ -77,21 +77,21 @@ def test_conversion_with_symbols(qtbot):
 
 
 def test_invalid_conversion(qtbot):
-    widget = SympyUnitEdit(text='(1*mm)*b')
+    widget = UnitEdit(text='(1*mm)*b')
     show(locals())
     syms = widget.getSymbols()
     assert set(syms.keys()) == {'b'}
 
-    assert (widget.convertTo(units.inch) - parseExprUnits('b*5*inch/127')).simplify() == 0
-    assert (widget.convertTo('kg') - parseExprUnits('b*mm')).simplify() == 0
-    assert (widget.convertTo(units.m*units.m) - parseExprUnits('b*m/1000')).simplify() == 0
-    assert (widget.convertTo(units.m) - parseExprUnits('b*m/1000')).simplify() == 0
+    assert (widget.convertTo(units.inch) - parseUnits('b*5*inch/127')).simplify() == 0
+    assert (widget.convertTo('kg') - parseUnits('b*mm')).simplify() == 0
+    assert (widget.convertTo(units.m*units.m) - parseUnits('b*m/1000')).simplify() == 0
+    assert (widget.convertTo(units.m) - parseUnits('b*m/1000')).simplify() == 0
 
-    widget = SympyUnitEdit(text='2*mm')
+    widget = UnitEdit(text='2*mm')
     show(locals())
     assert widget.getSymbols() == dict()
     widget.convertTo(units.inch)
 
-    assert (widget.convertTo('kg') - parseExprUnits('2*mm')).simplify() == 0
-    assert (widget.convertTo(units.m*units.m) - parseExprUnits('1*m/500')).simplify() == 0
-    assert (widget.convertTo(units.m) - parseExprUnits('1*m/500')).simplify() == 0
+    assert (widget.convertTo('kg') - parseUnits('2*mm')).simplify() == 0
+    assert (widget.convertTo(units.m*units.m) - parseUnits('1*m/500')).simplify() == 0
+    assert (widget.convertTo(units.m) - parseUnits('1*m/500')).simplify() == 0
