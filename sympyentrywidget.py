@@ -399,8 +399,6 @@ class SymbolEdit(AutoColorLineEdit):
 
     Added methods:
         getExpr: get the widget's current sympy.Expr (after processing by errorCheck)
-
-    written by Tim Olson - timjolson@user.noreplay.github.com
     """
     exprChanged = pyqtSignal([], [object], [str])
 
@@ -455,8 +453,6 @@ class ExprEdit(SymbolEdit):
         getExpr: get the widget's current sympy.Expr (after processing by errorCheck)
         getValue: uses sympy's evalf on the widget's expression, passing all arguments
         getSymbols: get a dict of the free symbols in widget's expression ; {symbol name:Symbol}
-
-    written by Tim Olson - timjolson@user.noreplay.github.com
     """
     valueChanged = pyqtSignal([], [object], [str])
     displayValue = pyqtSignal(str)
