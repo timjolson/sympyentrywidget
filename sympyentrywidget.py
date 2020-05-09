@@ -1,4 +1,5 @@
-from entrywidget import EntryWidget, AutoColorLineEdit, QHBoxLayout, DictComboBox, delegated
+from entrywidget import EntryWidget, AutoColorLineEdit, \
+    QHBoxLayout, DictComboBox, delegated
 from sympy import (Expr, Symbol, sympify, S,
                    sin, cos, sinh, cosh, tan, tanh, exp,
                    asin, acos, asinh, acosh, atan, atanh, atan2)
