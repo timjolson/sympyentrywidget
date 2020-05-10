@@ -54,9 +54,9 @@ def test_conversion_with_symbols(qtbot):
     widget.setUnits('m')
     expr = widget.getValue()
     conv = units.convert_to(expr, units.gram)
-    assert conv == units.meter * Symbol('b') /1000
-    assert widget.convertTo('meter') == conv
-    assert conv == widget.convertTo(units.gram)
+    assert (conv - units.meter * Symbol('b') /1000) == 0.0 * units.meter
+    assert (widget.convertTo('meter') - conv) == 0.0 * units.meter
+    assert (conv - widget.convertTo(units.gram)) == 0.0 * units.meter
 
 
 def test_invalid_conversion(qtbot):
@@ -79,11 +79,11 @@ def test_text_changes_value(qtbot):
     widget = SympyEntryWidget(text='1*mm + 1*inch', options='length')
     show(locals())
     assert widget.getError() is False
-    assert widget.convertTo(units.inch) == (132/127)*units.inch
+    assert (widget.convertTo(units.inch) - (132/127)*units.inch ) == 0.0 * units.inch
 
     qtbot.keyPress(widget.lineEdit, QtCore.Qt.Key_Home)
     qtbot.keyClicks(widget.lineEdit, '1')
-    assert widget.convertTo(units.inch) == (182/127) * units.inch
+    assert (widget.convertTo(units.inch) - (182/127) * units.inch ) == 0.0 * units.inch
     assert quantity_simplify(widget.getValue() - (182/127 * units.inch)) == 0
 
     qtbot.keyPress(widget.lineEdit, 'b')
@@ -95,7 +95,7 @@ def test_option_changes_value(qtbot):
     widget = SympyEntryWidget(text='3*mm', windowTitle='EntryWidget', objectName='EntryWidget',
                              options={'mm':units.mm, 'm':units.meter, 'kg':units.kg, 'n/a':units.One})
     show(locals())
-    assert widget.getValue() == 3*units.mm
+    assert widget.getValue() == 3.0 * units.mm
     widget.setUnits('kg')
     assert widget.getError()
     widget.setUnits('m')
@@ -121,4 +121,4 @@ def test_option_changes_value(qtbot):
     widget.setText('3*inch / (1*foot)')
     assert widget.getError() is False
     assert widget.getValue() == .25
-    assert widget.convertTo(units.inch) == .25*units.inch
+    assert (widget.convertTo(units.inch) - .25*units.inch ) == 0.0

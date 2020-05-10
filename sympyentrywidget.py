@@ -19,23 +19,35 @@ logger.addHandler(logging.NullHandler())
 
 class _storage:
     USgal = units.Quantity('US gallon', 'USgal')
-    USgal.set_scale_factor(231*units.inch**3)
-    USgal.set_dimension(units.length**3)
+    # units.systems.SI.set_quantity_scale_factor(USgal, 231*units.inch**3)
+    # USgal.set_scale_factor(231*units.inch**3)
+    # USgal.set_dimension(units.length**3)
+    units.systems.SI.set_quantity_dimension(USgal, units.length**3)
     UKgal = units.Quantity('UK gallon', 'UKgal')
-    UKgal.set_scale_factor(4.54609*units.liter)
-    UKgal.set_dimension(units.length**3)
+    # units.systems.SI.set_quantity_scale_factor(UKgal, 4.54609*units.liter)
+    # UKgal.set_scale_factor(4.54609*units.liter)
+    # UKgal.set_dimension(units.length**3)
+    units.systems.SI.set_quantity_dimension(UKgal, units.length**3)
     lbf = units.Quantity('pound_force', 'lbf')
-    lbf.set_dimension(units.force)
-    lbf.set_scale_factor(units.pound.scale_factor)
+    # lbf.set_dimension(units.force)
+    units.systems.SI.set_quantity_dimension(lbf, units.force)
+    # units.systems.SI.set_quantity_scale_factor(lbf, units.pound.scale_factor)
+    # lbf.set_scale_factor(units.pound.scale_factor)
     MPa = megapascal = megapascals = units.Quantity('megapascal', 'MPa')
-    MPa.set_dimension(units.pressure)
-    MPa.set_scale_factor(1000*units.kPa)
-    GPa = gigapascal = gigapascals = units.Quantity('megapascal', 'GPa')
-    GPa.set_dimension(units.pressure)
-    GPa.set_scale_factor(1e6*units.kPa)
+    # MPa.set_dimension(units.pressure)
+    units.systems.SI.set_quantity_dimension(MPa, units.pressure)
+    # units.systems.SI.set_quantity_scale_factor(MPa, 1000*units.kPa)
+    # MPa.set_scale_factor(1000*units.kPa)
+    GPa = gigapascal = gigapascals = units.Quantity('gigapascal', 'GPa')
+    # GPa.set_dimension(units.pressure)
+    units.systems.SI.set_quantity_dimension(GPa, units.pressure)
+    # units.systems.SI.set_quantity_scale_factor(GPa, 1e6*units.kPa)
+    # GPa.set_scale_factor(1e6*units.kPa)
     kN = kilonewton = kilonewtons = units.Quantity('kilonewton', 'kN')
-    kN.set_dimension(units.force)
-    kN.set_scale_factor(1000*units.newton)
+    # kN.set_dimension(units.force)
+    units.systems.SI.set_quantity_dimension(kN, units.force)
+    # units.systems.SI.set_quantity_scale_factor(kN, 1000*units.newton)
+    # kN.set_scale_factor(1000*units.newton)
 
     weight = units.force
     density = units.mass/units.volume
@@ -243,14 +255,14 @@ def getDimension(expr):
     logger.log(logging.DEBUG-1, f'getDimension({expr})')
     if expr is not None:
         try:
-            result = units.Quantity._collect_factor_and_dimension(expr)[1]
+            result = units.systems.SI._collect_factor_and_dimension(expr)[1]
         except ValueError as e:
             logger.log(logging.DEBUG-1, f'getDimension() -> {repr(e)}')
             result = None
         except AttributeError as e:
             logger.log(logging.DEBUG-1, f'getDimension() -> {repr(e)}')
             ev = quantity_simplify(expr).evalf()
-            result = units.Quantity._collect_factor_and_dimension(ev)[1]
+            result = units.systems.SI._collect_factor_and_dimension(ev)[1]
     else:
         result = None
     logger.log(logging.DEBUG-1, f'getDimension({expr}) -> {result}')
@@ -916,7 +928,7 @@ class SympyEntryWidget(EntryWidget):
     label = pyqtProperty(str, lambda s: s._label.text(), lambda s, t: s._label.setText(t))
 
 
-__all__ = ['SymbolEdit', 'ExprEdit', 'UnitEdit', 'DimensionEdit',
+__all__ = ['AutoColorLineEdit', 'EntryWidget', 'SymbolEdit', 'ExprEdit', 'UnitEdit', 'DimensionEdit',
            'SympyEntryWidget', 'units', 'unitSubs', 'UnitMisMatchError',
            'ExpressionError', 'unitsAreConsistent', 'parseExpr', 'parseUnits',
            'convertTo', 'getDimension', 'CommonUnits']

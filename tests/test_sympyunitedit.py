@@ -34,7 +34,7 @@ def test_constructor_text(qtbot):
 
 
 def test_constructor_units(qtbot):
-    widget = UnitEdit(text='2*mm')
+    widget = UnitEdit(text='2.0*mm')
     show(locals())
     assert widget.getError() is False
     assert getCurrentColor(widget, 'Background').names[0] == widget.defaultColors['default'][0]

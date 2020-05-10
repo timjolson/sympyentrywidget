@@ -1,22 +1,31 @@
 from sympyentrywidget import SympyEntryWidget, ExprEdit, UnitEdit, DimensionEdit, SymbolEdit
 from PyQt5.QtWidgets import QWidget, QVBoxLayout
-import logging
+
+# Qt stuff
+# from PyQt5.Qt import QApplication  # optional, can be started from widget.mkQApp()
+# from PyQt5.QtWidgets import QApplication
+# app = QApplication(sys.argv)
+
 import sys
 
-from PyQt5.Qt import QApplication
-
+# log to console
+import logging
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 
-app = QApplication([])
-w = QWidget()
-layout = QVBoxLayout()
+# start Qt
+app = SympyEntryWidget.mkQApp()
 
+# <editor-fold desc="Support Funcs">
 def show_symbols(widget):
     print(type(widget).__name__, '-> symbols:', widget.getSymbols())
 
 def printer(title):
     return lambda *t: print(title, *t)
+# </editor-fold>
 
+
+w = QWidget()
+layout = QVBoxLayout()
 
 sym = SymbolEdit(text='symbol_name')
 sym.hasError[object].connect(printer('SymbolEdit.hasError[object]'))

@@ -1,14 +1,22 @@
 from PyQt5.QtWidgets import QLineEdit, QWidget, QHBoxLayout
 from PyQt5.QtCore import pyqtProperty, pyqtSignal
-from PyQt5 import Qt, QtCore
+from PyQt5 import QtGui
 from PyQt5.QtGui import QColor
+from PyQt5.Qt import QApplication
 from qt_utils import loggableQtName, ErrorMixin
 from qt_utils.widgets import DictComboBox
-from generalUtils.delegated import delegated
+from delegated import delegated
 import logging
 
 logger = logging.getLogger(__name__)
 logger.addHandler(logging.NullHandler())
+
+
+def mkQApp(*args):
+    qa = QApplication.instance()
+    if qa is None:
+        qa = QApplication(list(args))
+    return qa
 
 
 def _isColorTuple(colors):
@@ -24,7 +32,7 @@ def _isColorTuple(colors):
 
     if not isinstance(colors, (tuple, list)): return False
     if not len(colors) == 2: return False
-    if not all(isinstance(c, (str, tuple, list, QColor)) for c in colors): return False
+    if not all(isinstance(c, (str, tuple, QColor)) for c in colors): return False
     return True
 
 
@@ -236,7 +244,7 @@ class AutoColorLineEdit(QLineEdit, ErrorMixin):
                     'error': X,             # box is editable and has an error
                     'error-readonly': X     # box is not editable, but has an error
                 }
-                *all keys are optional, dict update currently stored autoColors.
+                *all keys are optional, dict updates currently stored autoColors.
                 Where each X matches the format below.
 
             tuple format (backgroundColor, textColor):
@@ -291,11 +299,19 @@ class AutoColorLineEdit(QLineEdit, ErrorMixin):
 
     @classmethod
     def popArgs(cls, kwargs):
+        '''Remove(pop) widget's defaultArgs from kwargs, and return
+        defaultArgs having been updated by the pop'ed kwargs.
+
+        :param kwargs: dict
+        :return: dict
+        '''
         args = cls.defaultArgs.copy()
         for k in args:
             if k in kwargs:
                 args[k] = kwargs.pop(k)
         return args
+
+    mkQApp = mkQApp
 
 
 class EntryWidget(QWidget):
@@ -445,5 +461,6 @@ class EntryWidget(QWidget):
     def isReadOnly(self):
         return self.lineEdit.isReadOnly() and (not self.comboBox.isEnabled())
 
+    mkQApp = mkQApp
 
 __all__ = ['AutoColorLineEdit', 'EntryWidget']

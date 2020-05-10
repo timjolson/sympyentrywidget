@@ -1,14 +1,19 @@
-from entrywidget import AutoColorLineEdit
-from PyQt5.Qt import QApplication
+from sympyentrywidget import AutoColorLineEdit
 from PyQt5 import QtWidgets
+
+# Qt stuff
+# from PyQt5.Qt import QApplication  # optional, can be started from widget.mkQApp()
+# from PyQt5.QtWidgets import QApplication
+# app = QApplication(sys.argv)
+
 import sys
-import logging
 
 # log to console
+import logging
 logging.basicConfig(stream=sys.stdout, level=logging.INFO)
 
 # start Qt
-app = QApplication(sys.argv)
+app = AutoColorLineEdit.mkQApp(sys.argv)
 
 # <editor-fold desc="Support Funcs">
 def detect_error(w):
@@ -88,7 +93,7 @@ Try typing the following strings and pressing RETURN/ENTER: (editingFinished)
     'manual' to change the box to manual colors.
     'readonly' to make the box readonly.
     'disable' to disable the box.
-    'close' to close the window.
+    'close' to close this whole window.
 """
 )
 
@@ -133,7 +138,7 @@ Try typing the following strings and pressing RETURN/ENTER: (editingFinished)
     'manual' to change the box to manual colors.
     'readonly' to make the box readonly.
     'disable' to disable the box.
-    'close' to close the window.
+    'close' to close this whole window.
 """
 )
 
@@ -154,13 +159,14 @@ Try typing the following strings: (textChanged)
     'manual' to change the box to manual colors.
     'readonly' to make the box readonly.
     'disable' to disable the box.
-    'close' to close the window.
+    'close' to close this whole window.
 """
 )
 
 print("\n-----------------------")
 window = QtWidgets.QWidget()
 window.setObjectName('main window')
+window.setWindowTitle("Try these out")
 layout = QtWidgets.QVBoxLayout(window)
 layout.addWidget(widgetDefault)
 layout.addWidget(widget0)
@@ -169,7 +175,7 @@ layout.addWidget(widget2)
 layout.addWidget(widget3)
 
 info = QtWidgets.QTextEdit(
-    """Hover over widgets for help.
+    """Hover over each widget for help.
     Watch console for logging.
     """, window)
 layout.addWidget(info)

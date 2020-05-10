@@ -1,0 +1,6 @@
+[submodule "delegated"]
+	path = delegated
+	url = https://github.com/timjolson/delegated.git
+[submodule "qt_utils"]
+	path = qt_utils
+	url = https://github.com/timjolson/qt_utils.git

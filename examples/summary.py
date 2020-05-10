@@ -1,9 +1,15 @@
 from PyQt5.QtWidgets import QWidget, QVBoxLayout
-from PyQt5.Qt import QApplication
 from entrywidget import AutoColorLineEdit, EntryWidget
 
+# Qt stuff
+# from PyQt5.Qt import QApplication  # optional, can be started from widget.mkQApp()
+# from PyQt5.QtWidgets import QApplication
+# app = QApplication(sys.argv)
 
-# <editor-fold desc="helper functions, read their doc strings for reference">
+# start Qt
+app = EntryWidget.mkQApp()
+
+# <editor-fold desc="Support Funcs">
 def check_error_typed(widget):
     """Returns 'ERROR' if widget.text() == 'error', False otherwise"""
     print('check_error_typed: ', widget.text())
@@ -23,8 +29,6 @@ def printer(label):
 # </editor-fold>
 
 
-# start Qt stuff
-app = QApplication([])
 # main window, there are other ways to make this
 window = QWidget()
 
@@ -34,6 +38,16 @@ autocolor.hasError[object].connect(printer('hasError[object] !!!'))
 # autocolor.hasError[str].connect(printer('hasError[str] !!!'))
 # autocolor.hasError.connect(printer('hasError !!!'))
 autocolor.errorCleared.connect(lambda: print(':) NO MORE ERROR :)'))
+autocolor.setToolTip(
+    """
+    Typing 'error' causes:
+        box to have error (errorCheck)
+        log the error (hasError)
+    Clear 'error' causes:
+        error status cleared (errorCheck)
+        log the error (errorCleared)
+    """
+)
 
 # AutoColorLineEdit and a DictComboBox
 entry = EntryWidget(window, text='EntryWidget',
@@ -46,7 +60,16 @@ entry.optionChanged[str].connect(printer('optionChanged[str]'))
 entry.dataChanged[object].connect(printer('dataChanged[object]'))
 # entry.dataChanged[str].connect(printer('dataChanged[str]'))
 # entry.dataChanged.connect(printer('dataChanged'))
-
+entry.setToolTip(
+    """
+    Change combobox cuases:
+        log new option (optionChanged)
+        log data assigned to new option (dataChanged)
+    Text matches combobox causes:
+        box to have error (errorCheck)
+        log the error (hasError)
+    """
+)
 
 # put a vertical layout in the window
 layout = QVBoxLayout(window)

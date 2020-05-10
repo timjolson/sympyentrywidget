@@ -1,23 +1,24 @@
-import pytest
-
-from entrywidget import EntryWidget
-import sys
+from sympyentrywidget import EntryWidget
 
 # Qt stuff
-from PyQt5 import QtCore
-from PyQt5.QtWidgets import QApplication
-app = QApplication(sys.argv)
+# from PyQt5.Qt import QApplication  # optional, can be started from widget.mkQApp()
+# from PyQt5.QtWidgets import QApplication
+# app = QApplication(sys.argv)
 
-# logging stuff
+import sys
+
+# log to console
 import logging
 logging.basicConfig(stream=sys.stdout, level=logging.INFO)
+
+# start Qt
+app = EntryWidget.mkQApp()
 
 # <editor-fold desc="Support Funcs">
 def change_color_on_option(entry_widget):
     print('change_color to', entry_widget.getSelected())
     entry_widget.setColors((entry_widget.getSelected(), 'black'))
 # </editor-fold>
-
 
 print("\n----------------------- Standard Usage")
 widget = EntryWidget(options=['opt1', 'opt2', 'opt3'], text='Prompt Text')
