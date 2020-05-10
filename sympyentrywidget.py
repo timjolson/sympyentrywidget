@@ -411,7 +411,7 @@ def unitsAreConsistent(expr, targetUnits=None):
 
 
 class SymbolEdit(AutoColorLineEdit):
-    """entrywidget.AutoColorLineEdit subclass
+    """AutoColorLineEdit subclass, changes text to a Symbol name.
     Added signals:
         exprChanged([]],[object],[str])  # emitted when the expression is successfully changed
 
@@ -461,7 +461,7 @@ class SymbolEdit(AutoColorLineEdit):
 
 
 class ExprEdit(SymbolEdit):
-    """entrywidget.AutoColorLineEdit subclass
+    """AutoColorLineEdit subclass, evaluates/simplifies text.
     Added signals:
         exprChanged([]],[object],[str])  # emitted when the expression is successfully changed
         valueChanged([]],[object],[str])  # same as exprChanged, but emits sympy's evalf(expr)
@@ -537,7 +537,7 @@ class ExprEdit(SymbolEdit):
 
 
 class UnitEdit(ExprEdit):
-    """ExprEdit subclass
+    """ExprEdit subclass, includes support for units.
     Added signals:
         exprChanged([]],[object],[str])  # emitted when the expression is successfully changed
         valueChanged([]],[object],[str])  # same as exprChanged, but emits sympy's evalf(expr)
@@ -551,8 +551,6 @@ class UnitEdit(ExprEdit):
         getMagnitude: get scale\\magnitude\\value of widget's expression without units
         convertTo: convert widget's expression to different units
         getUnits: get units of widget's expression
-
-    written by Tim Olson - timjolson@user.noreplay.github.com
     """
     @staticmethod
     def errorCheck(self):
@@ -647,11 +645,9 @@ class UnitEdit(ExprEdit):
 
 
 class DimensionEdit(UnitEdit):
-    """UnitEdit subclass, with output having an enforced dimension.
+    """UnitEdit subclass, output has an enforced dimension.
     Added methods:
         setDimension: set dimension of widget's output
-
-    written by Tim Olson - timjolson@user.noreplay.github.com
     """
     defaultArgs = UnitEdit.defaultArgs.copy()
     defaultArgs.update(dimension=units.Dimension('length'))
@@ -728,7 +724,7 @@ class DimensionEdit(UnitEdit):
 
 
 class SympyEntryWidget(EntryWidget):
-    """entrywidget.EntryWidget subclass using UnitEdit in place of AutoColorLineEdit.
+    """EntryWidget subclass using DimensionEdit.
 
     Added signals:
         exprChanged([]],[object],[str])  # emitted when UnitEdit expression is successfully changed
