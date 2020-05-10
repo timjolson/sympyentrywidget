@@ -18,7 +18,6 @@ def test_expr_errors():
 
     for ex, safe, cause_error, ident in expr_safe_check:
         testLogger.debug(f"ex = {ex}, safe = {safe}, error = {cause_error}, ident = {ident}")
-        assert expr_is_safe(ex) == safe
 
         if not safe:
             with pytest.raises(ExpressionError):

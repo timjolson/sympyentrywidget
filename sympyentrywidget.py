@@ -111,19 +111,23 @@ for t in _modded_special_types:
 
 
 def expr_is_safe(expr_string):
-    """Returns whether the string is safe to 'eval()'.
-    Detects improper use of '.' attribute access
+    """Returns unsafe usage of '.' attribute access, if present, `None` otherwise.
 
     :param expr_string: string to check for safety
-    :return: True if safe, False otherwise
+    :return: `None` if safe, unsafe str otherwise
     """
     assert isinstance(expr_string, str), 'Provide a string expression to verify is safe'
-    for r in '()+-*/':
-        expr_string = expr_string.replace(r, " "+r+" ")
+    # for r in '()+-*/':
+    #     expr_string = expr_string.replace(r, " "+r+" ")
+    # res = re.findall(r"((((?=\D)\S)+\d*)+[.])|([.]\d*((?=[\D])\S)+)", expr_string)
 
-    # return re.search(r"((\d*((?=\D)\S)+\d*)+[.])|([.](\d*((?=\D)\S)+))", expr_string) is None
-    # return re.search(r"((((?=\D)\S)+\d*)+[.])|([.]\d*((?=[\D])\S)+)", expr_string) is None
-    return re.search(r"(((?=\D)\S)+\d*)+[.]|[.]\d*((?=[\D])\S)+", expr_string) is None
+    res = re.findall(r"((\d*[[a-zA-Z_\)]+\d*]*[.])|([.]\d*[a-zA-Z_\(]+\d*))", expr_string)
+
+    if res:
+        res = max(*res, key=len)
+    else:
+        res = None
+    return res
 
 
 class UnitMisMatchError(ValueError):
@@ -187,8 +191,9 @@ def _keywordError(text):
 
 
 def _notSafeError(text):
-    if not expr_is_safe(text):
-        raise ExpressionError("Invalid use of '.'")
+    res = expr_is_safe(text)
+    if res is not None:
+        raise ExpressionError(f"Invalid use of '.' `{res}`")
     return False
 
 
@@ -206,7 +211,7 @@ def textToSymbol(text):
     :return: sympy.Symbol or raises ExpressionError
     """
     if text == '':
-        raise ExpressionError('Empty string not a valid Sympy Symbol name')
+        raise ExpressionError('Empty string not a valid Symbol name')
 
     return _notSafeError(text) or _keywordError(text) or _invalidIdentifierError(text) or Symbol(text)
 

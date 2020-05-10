@@ -32,29 +32,29 @@ def test_constructor_text(qtbot):
 
 
 def test_expr_error(qtbot):
-    for e in expr_safe_check:
-        testLogger.debug(f"e = {e}")
-        widget = ExprEdit(text=e[0])
+    for e, safe, cause_error, ident in expr_safe_check:
+        testLogger.debug(f"ex = {e}, safe = {safe}, error = {cause_error}, ident = {ident}")
+        widget = ExprEdit(text=e)
         show(locals())
-        assert bool(widget.getError()) is e[2]
-        if e[0] == '':
+        assert bool(widget.getError()) is cause_error
+        if e == '':
             assert getCurrentColor(widget, 'Background').names[0] == \
                    widget.defaultColors['blank'][0]
         else:
             assert getCurrentColor(widget, 'Background').names[0] == \
-                   widget.defaultColors['error' if e[2] else 'default'][0]
+                   widget.defaultColors['error' if cause_error else 'default'][0]
 
     widget = ExprEdit()
     show(locals())
-    for e in expr_safe_check:
-        widget.setText(e[0])
-        assert bool(widget.getError()) is e[2]
-        if e[0] == '':
+    for e, safe, cause_error, ident in expr_safe_check:
+        widget.setText(e)
+        assert bool(widget.getError()) is cause_error
+        if e == '':
             assert getCurrentColor(widget, 'Background').names[0] == \
                    widget.defaultColors['blank'][0]
         else:
             assert getCurrentColor(widget, 'Background').names[0] == \
-                   widget.defaultColors['error' if e[2] else 'default'][0]
+                   widget.defaultColors['error' if cause_error else 'default'][0]
 
 
 def test_constructor_math(qtbot):
