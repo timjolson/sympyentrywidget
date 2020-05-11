@@ -57,8 +57,8 @@ dim.valueChanged[object].connect(printer('DimensionEdit.valueChanged[object]'))
 dim.setToolTip("Dimension (length) is enforced")
 layout.addWidget(dim)
 
-entry = SympyEntryWidget(text='3*mm + 1*inch', windowTitle='EntryWidget', objectName='EntryWidget',
-                     options='length')
+entry = SympyEntryWidget(text='3*mm + 1*inch', objectName='EntryWidget',
+                     options='length', label='->')
 entry.exprChanged[object].connect(printer('SympyEntryWidget.exprChanged[object]'))
 entry.valueChanged[object].connect(printer('SympyEntryWidget.valueChanged[object]'))
 entry.setToolTip("Dimension (length) is enforced")

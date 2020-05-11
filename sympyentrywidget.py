@@ -785,6 +785,8 @@ class SympyEntryWidget(EntryWidget):
             kwargs['errorCheck'] = lambda lineedit: ec(self)
         else:
             kwargs['errorCheck'] = lambda lineedit: self.errorCheck(self)
+        _label = kwargs.pop('label', self.defaultArgs['label'])
+
         self.lineEdit = lineEdit = DimensionEdit(parent=self, **kwargs)
         lineEdit.exprChanged[object].connect(self.exprChanged[object].emit)
         lineEdit.errorCleared.connect(self.errorCleared.emit)
@@ -792,7 +794,7 @@ class SympyEntryWidget(EntryWidget):
         lineEdit.hasError[object].connect(self.hasError[object].emit)
         lineEdit.displayValue.connect(self.displayValue.emit)
 
-        self._label = label = QtWidgets.QLabel(parent=self, text=kwargs.pop('label', self.defaultArgs['label']))
+        self._label = label = QtWidgets.QLabel(parent=self, text=_label)
         self.output = output = QtWidgets.QLabel(parent=self)
 
         def formatNum(expr):
