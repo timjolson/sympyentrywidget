@@ -1,0 +1,7 @@
+PyQt5==5.9
+sympy
+-e ../entrywidget
+-e ../delegated
+-e ../qt_utils
+pytest
+pytest-qt

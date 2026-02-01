@@ -5,6 +5,6 @@ setup(
     name='sympyentrywidget',
     version="0.9",
     packages = find_packages(),
-    install_requires=['PyQt5==5.9', 'sympy'],
+    # Dependencies are now managed in requirements.txt
     tests_require=['pytest', 'pytest-qt'],
 )

@@ -14,9 +14,24 @@ This package is an extension adding a sympy backend to support symbolic/mathemat
 
 ## Installation
 
-    git clone https://github.com/timjolson/sympyentrywidget.git
-    pip3 install sympyentrywidget  # (use -e to edit/develop)
-    sudo python3 -m sympyentrywidget  # copy QtDesigner plugin file for system-wide use
+To install for normal use (from PyPI or system packages):
+
+```sh
+pip install -r requirements.txt
+```
+
+## Developer Setup
+
+If you are developing `sympyentrywidget` and its dependencies (`entrywidget`, `delegated`, `qt_utils`) at the same time (e.g., as submodules or local clones), use the development requirements file:
+
+```sh
+git clone https://github.com/timjolson/entrywidget.git
+git clone https://github.com/timjolson/delegated.git
+git clone https://github.com/timjolson/qt_utils.git
+pip install -r requirements-dev.txt
+```
+
+This ensures that changes to those packages are immediately available in your development environment.
 
 ## doc strings:
 
@@ -148,4 +163,4 @@ This package is an extension adding a sympy backend to support symbolic/mathemat
     errorCheck  # checks expression for errors (specific errors dependent on class)
     getExpr  # get sympy.Expr version of widget.text() after error handling
     getSymbols  # get dict() of {symbol.name: sympy.Symbol, ... }
-    
+
