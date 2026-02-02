@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "sympyentrywidget"
+version = "0.9"
+description = "PyQt5 Widgets centered around QLineEdit, with automatic error checking and color changes. Sympy backend for symbolic/mathematic evaluation and unit conversions."
+authors = [
+    { name = "timjolson", email = "timjolson@users.noreply.github.com" }
+]
+readme = "README.md"
+license = { file = "LICENSE" }
+requires-python = ">=3.6"
+dependencies = [
+    "PyQt5>=5.9",
+    "sympy",
+    "entrywidget @ git+https://github.com/timjolson/entrywidget.git",
+    "delegated @ git+https://github.com/timjolson/delegated.git",
+    "qt_utils @ git+https://github.com/timjolson/qt_utils.git"
+]
+
+[project.optional-dependencies]
+development = [
+    "pytest",
+    "pytest-qt"
+]
+
+[tool.setuptools.packages.find]
+where = ["."]

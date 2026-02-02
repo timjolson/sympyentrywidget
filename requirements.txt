@@ -1,6 +1,5 @@
-PyQt5==5.9
+PyQt5>=5.9
 sympy
-entrywidget
-delegated
-qt_utils
-
+entrywidget @ git+https://github.com/timjolson/entrywidget.git
+delegated @ git+https://github.com/timjolson/delegated.git
+qt_utils @ git+https://github.com/timjolson/qt_utils.git
