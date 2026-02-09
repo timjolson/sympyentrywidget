@@ -44,7 +44,7 @@ This ensures that changes to those packages are immediately available in your de
 #### SympySymbolEdit
     AutoColorLineEdit subclass
     Added signals:
-        exprChanged([]],[object],[str])  # emitted when the expression is successfully changed
+        exprChanged([],[object],[str])  # emitted when the expression is successfully changed
 
     Added methods:
         getExpr: get the widget's current sympy.Expr (after processing by errorCheck)
@@ -52,8 +52,8 @@ This ensures that changes to those packages are immediately available in your de
 #### SympyExprEdit
     AutoColorLineEdit subclass
     Added signals:
-        exprChanged([]],[object],[str])  # emitted when the expression is successfully changed
-        valueChanged([]],[object],[str])  # same as exprChanged, but emits sympy's evalf(expr)
+        exprChanged([],[object],[str])  # emitted when the expression is successfully changed
+        valueChanged([],[object],[str])  # same as exprChanged, but emits sympy's evalf(expr)
         displayValue(str)  # same as valueChanged, but emits str(evalf(4)) for reasonable display
 
     Added methods:
@@ -65,8 +65,8 @@ This ensures that changes to those packages are immediately available in your de
 
     SympyExprEdit subclass
     Added signals:
-        exprChanged([]],[object],[str])  # emitted when the expression is successfully changed
-        valueChanged([]],[object],[str])  # same as exprChanged, but emits sympy's evalf(expr)
+        exprChanged([],[object],[str])  # emitted when the expression is successfully changed
+        valueChanged([],[object],[str])  # same as exprChanged, but emits sympy's evalf(expr)
         displayValue(str)  # same as valueChanged, but emits str(evalf(4)) for reasonable display
 
     Added methods:
@@ -82,8 +82,8 @@ This ensures that changes to those packages are immediately available in your de
     EntryWidget subclass using SympyUnitEdit in place of AutoColorLineEdit.
 
     Added signals:
-        exprChanged([]],[object],[str])  # emitted when SympyUnitEdit expression is successfully changed
-        valueChanged([]],[object],[str])  # same as exprChanged, but uses sympy's evalf on expression first
+        exprChanged([],[object],[str])  # emitted when SympyUnitEdit expression is successfully changed
+        valueChanged([],[object],[str])  # same as exprChanged, but uses sympy's evalf on expression first
         displayValue(str)  # same as valueChanged, but emits str(evalf(4)) for reasonable display
 
     Added methods:
@@ -116,3 +116,6 @@ This ensures that changes to those packages are immediately available in your de
     getExpr  # get sympy.Expr version of widget.text() after error handling
     getSymbols  # get dict() of {symbol.name: sympy.Symbol, ... }
 
+## License
+
+See [LICENSE](LICENSE) for details.
